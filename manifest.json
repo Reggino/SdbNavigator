@@ -1,0 +1,20 @@
+{
+	"name": "SdbNavigator",
+	"version": "1.0",
+	"description": "SdbNavigator is an open source Amazon SimpleDB Administration Interface. More info on http://www.kingsquare.nl/sdbnavigator",
+	"browser_action": {
+		"default_icon": "resources/img/icon.png",
+		"popup": "extension.html"
+	},
+	"icons": {
+		"16": "resources/img/icon16.png",
+        "48": "resources/img/icon48.png",
+        "128": "resources/img/icon128.png" },
+	"permissions": [
+		"https://sdb.amazonaws.com/*",
+		"https://sdb.us-west-1.amazonaws.com/*",
+		"https://sdb.eu-west-1.amazonaws.com/*",
+		"https://sdb.ap-southeast-1.amazonaws.com/*",
+		"https://sdb.ap-northeast-1.amazonaws.com/*"
+	]
+}

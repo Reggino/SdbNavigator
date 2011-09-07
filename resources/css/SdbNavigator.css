@@ -1,0 +1,4 @@
+/* hide annoying roweditor tooltip*/
+.x-grid-row-editor-errors { display: none; }
+
+a { color: #777;}
