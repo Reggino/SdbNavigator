@@ -31,7 +31,6 @@ To make the data more manageable, SdbNavigator uses a 'virtual schema' for a sch
 * Add some properties to the selected domain (if they could not be retrieved by scanning existing records)
 * Start adding new records using the defined properties
 
-
 Contributing
 ------------
 
