@@ -134,7 +134,7 @@ Ext.define('SdbNavigator.controller.SdbData', {
 						clicksToEdit: 2,
 						listeners: {
 							beforeedit: function (context) {
-								this.editor.query('textfield[name="itemName()"]')[0].setDisabled(!Ext.isEmpty(context.record.data.name));
+								this.editor.query('textfield[name="itemName()"]')[0].setDisabled(!Ext.isEmpty(context.record.data['itemName()']));
 							},
 							edit: function (context) {
 								var updateRecord = function (record) {
