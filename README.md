@@ -4,12 +4,12 @@ SdbNavigator
 A free and open source webinterface for Amazon SimpleDB
 -------
 
-* No serverside scripts needed: do everything from your browser
-* Manage domains, (CR)reate, (U)pdate and (D)elete)
-* Manage records, (CR)reate, (U)pdate and (D)elete)
+* No server-side scripts needed: do everything from your browser
+* Manage domains, Create, Read, Update and Delete
+* Manage records, Create, Read, Update and Delete
 * Find records using your own queries, or by sorting on properties
-* Quickly edit records using a convenient interface.
-
+* Quickly edit records using a convenient interface
+* Convenient interface like PhpMyAdmin. 
 
 Installation
 -----------
@@ -30,6 +30,10 @@ To make the data more manageable, SdbNavigator uses a 'virtual schema' for a sch
 * Now choose a domain on the left-hand side, or create a new one.
 * Add some properties to the selected domain (if they could not be retrieved by scanning existing records)
 * Start adding new records using the defined properties
+
+PLEASE NOTE that your AWS credentials will be stored in a local cookie so don't use this plugin on any public computer.
+This free, beta software is released under GPL v3 and comes with absolutely no warranty. Make sure you have backup of
+important data before using this software.
 
 Contributing
 ------------
