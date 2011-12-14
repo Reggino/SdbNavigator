@@ -22,6 +22,15 @@ Ext.define('SdbNavigator.controller.SdbData', {
 
 		this.control({
 			'#sdbDataGrid': {
+				render: function (grid) {
+					grid.getStore().addListener('remove', function (store, record) {
+						SdbNavigator.SimpleDb.doQuery('GET', {
+							Action: 'DeleteAttributes',
+							DomainName: Ext.getCmp('domainTreePanel').getRootNode().findChild('expanded', true).data.text,
+							ItemName: record.get('itemName()')
+						});
+					});
+				},
 				itemcontextmenu: function (gridview, record, tr, index, event) {
 					event.stopEvent();
 					rowContextMenu.showAt(event.xy);
@@ -111,7 +120,7 @@ Ext.define('SdbNavigator.controller.SdbData', {
 				xtype: 'gridpanel',
 				id: 'sdbDataGrid',
 				store: new Ext.data.Store({
-					'fields': fields,
+					fields: fields,
 					data: resultData,
 					proxy: 'memory',
 					sort: function (sortOptions) {
