@@ -154,8 +154,10 @@ Ext.define('SdbNavigator.controller.SdbData', {
 									};
 									Ext.Object.each(record.data, function (propName, propValue) {
 										if (propName !== 'itemName()') {
+											/* @todo implement scenario where multiple instances of one attribute may exist 'Replace' now is always true */
 											params['Attribute.' + propCount + '.Name'] = propName;
 											params['Attribute.' + propCount + '.Value'] = propValue;
+											params['Attribute.' + propCount + '.Replace'] = true;
 											propCount += 1;
 										}
 									});
