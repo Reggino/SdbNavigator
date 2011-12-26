@@ -3,7 +3,6 @@
 
 Ext.define('SdbNavigator.controller.SdbData', {
 	extend: 'Ext.app.Controller',
-	views: [ 'SdbDataPanel' ],
 
 	init: function () {
 		var self = this, rowContextMenu;
@@ -24,18 +23,20 @@ Ext.define('SdbNavigator.controller.SdbData', {
 			'#sdbDataGrid': {
 				render: function (grid) {
 					grid.getStore().addListener('remove', function (store, record) {
-						SdbNavigator.SimpleDb.doQuery('GET', {
-							Action: 'DeleteAttributes',
-							DomainName: Ext.getCmp('domainTreePanel').getRootNode().findChild('expanded', true).data.text,
-							ItemName: record.get('itemName()')
-						});
+						if (!Ext.isEmpty(record.raw)) {
+							SdbNavigator.SimpleDb.doQuery('GET', {
+								Action: 'DeleteAttributes',
+								DomainName: Ext.getCmp('domainTreePanel').getRootNode().findChild('expanded', true).data.text,
+								ItemName: record.get('itemName()')
+							});
+						}
 					});
 				},
 				itemcontextmenu: function (gridview, record, tr, index, event) {
 					event.stopEvent();
 					rowContextMenu.showAt(event.xy);
 				},
-				'selectionchange': function (selectionModel, selection) {
+				selectionchange: function (selectionModel, selection) {
 					Ext.getCmp('deleteRecordButton').setDisabled(selection.length === 0);
 				}
 			},
@@ -106,6 +107,7 @@ Ext.define('SdbNavigator.controller.SdbData', {
 					editable: false,
 					editor:  {
 						xtype: 'textfield',
+						flex: 1,
 						editable: false,
 						allowBlank: (attribute !== 'itemName()')
 					}
@@ -149,11 +151,16 @@ Ext.define('SdbNavigator.controller.SdbData', {
 						clicksToEdit: 2,
 						listeners: {
 							beforeedit: function (context) {
-								this.editor.query('textfield[name="itemName()"]')[0].setDisabled(!Ext.isEmpty(context.record.data['itemName()']));
+								this.editor.query('textfield[name="itemName()"]')[0].setDisabled(!Ext.isEmpty(context.record.raw));
+							},
+							canceledit: function (context, eOpts) {
+								if (Ext.isEmpty(context.record.raw)) {
+									context.store.remove(context.record);
+								}
 							},
 							edit: function (context) {
 								var updateRecord = function (record) {
-									var propCount = 1, params = {
+									var grid, propCount = 1, params = {
 										DomainName:  domain,
 										Action: 'PutAttributes',
 										ItemName: record.get('itemName()')
@@ -177,7 +184,10 @@ Ext.define('SdbNavigator.controller.SdbData', {
 										if (parseInt(data[0].Count, 10) === 0) {
 											updateRecord(context.record);
 										} else {
-											Ext.Msg.alert('Error', 'A record with this itemName() already exists!');
+											grid = Ext.getCmp('sdbDataGrid');
+											Ext.Msg.alert('Error', 'A record with this itemName() already exists!', function () {
+												grid.getPlugin().startEdit(context.record, 0);
+											});
 										}
 									});
 								} else {

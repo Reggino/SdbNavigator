@@ -2,7 +2,9 @@ Ext.require(['Ext.state.CookieProvider', 'Ext.form.Label', 'Ext.form.field.Combo
 		'Ext.container.Viewport', 'Ext.layout.container.Border', 'Ext.form.field.Display',
 		'Ext.grid.PagingScroller', 'Ext.data.proxy.LocalStorage', 'Ext.grid.Panel',
 		'SdbNavigator.controller.DomainTree', 'SdbNavigator.controller.SdbData', 'SdbNavigator.controller.Settings',
-		'Ext.grid.plugin.RowEditing', 'Ext.selection.CheckboxModel', 'SdbNavigator.SimpleDb'], function () {
+		'Ext.grid.plugin.RowEditing', 'Ext.selection.CheckboxModel', 'SdbNavigator.SimpleDb',
+	'SdbNavigator.view.SdbDataPanel', 'SdbNavigator.view.SettingsPanel'
+], function () {
 	Ext.application({
 		id: 'SdbNavigator',
 		name: 'SdbNavigator',

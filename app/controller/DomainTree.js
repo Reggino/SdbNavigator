@@ -88,7 +88,7 @@ Ext.define('SdbNavigator.controller.DomainTree', {
 					}
 				},
 				'selectionchange': function (treepanel, selections) {
-					if (!selections[0].isLeaf() && !selections[0].isExpanded()) {
+					if (Ext.isDefined(selections[0]) && !selections[0].isLeaf() && !selections[0].isExpanded()) {
 						selections[0].expand();
 					}
 				}

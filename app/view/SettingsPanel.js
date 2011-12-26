@@ -7,7 +7,7 @@ Ext.define('SdbNavigator.view.SettingsPanel', {
 	title: '',
 	region: 'north',
 	layout: 'hbox',
-	id: 'settingsPanel',
+	itemId: 'settingsPanel',
 	height: 70,
 	tbar: {
 		xtype: 'toolbar',
