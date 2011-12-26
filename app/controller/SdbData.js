@@ -122,7 +122,13 @@ Ext.define('SdbNavigator.controller.SdbData', {
 				store: new Ext.data.Store({
 					fields: fields,
 					data: resultData,
-					proxy: 'memory',
+					proxy:{
+						type: 'memory',
+						reader: {
+							type: 'json',
+							idProperty: 'itemName()'
+						}
+					},
 					sort: function (sortOptions) {
 						var newQuery;
 						if (Ext.isObject(sortOptions)) {
