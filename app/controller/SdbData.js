@@ -176,6 +176,7 @@ Ext.define('SdbNavigator.controller.SdbData', {
 									});
 									SdbNavigator.SimpleDb.doQuery('GET', params, function () {
 										record.commit();
+										record.raw = record.data;
 									});
 								};
 
