@@ -77,7 +77,8 @@ Ext.define('SdbNavigator.controller.SdbData', {
 			//we have the data, now get the store up and running!
 			//First we need to check if the known columns are sufficient for the result
 			var domainNode = Ext.getCmp('domainTreePanel').getRootNode().findChild('expanded', true), domain = domainNode.data.text,
-				existingColumns = ['itemName()'], missingColumns = null, fields = [], columns = [],	sortData, sortDirection, columnHeader;
+					existingColumns = ['itemName()'], missingColumns = null, fields = [], sortData, sortDirection,
+					columnHeader, uniqueId = Ext.id(), columns = [];
 
 			Ext.each(resultData, function (record) {
 				Ext.each(Ext.Object.getKeys(record), function (recordProperty) {
@@ -98,13 +99,14 @@ Ext.define('SdbNavigator.controller.SdbData', {
 				existingColumns.push(missingColumn);
 			});
 
-			Ext.each(existingColumns, function (attribute) {
+			Ext.each(existingColumns, function (attribute, index) {
 				fields.push({name: attribute,  type: 'string'});
 				columns.push({
 					text: attribute,
 					dataIndex: attribute,
 					flex: 1,
 					editable: false,
+					id: uniqueId + '_' + index,
 					editor:  {
 						xtype: 'textfield',
 						flex: 1,
@@ -121,7 +123,7 @@ Ext.define('SdbNavigator.controller.SdbData', {
 			sdbDataGridPanelContainer.add({
 				xtype: 'gridpanel',
 				id: 'sdbDataGrid',
-				store: new Ext.data.Store({
+				store: {
 					fields: fields,
 					data: resultData,
 					proxy:{
@@ -143,9 +145,9 @@ Ext.define('SdbNavigator.controller.SdbData', {
 							return false;
 						}
 					}
-				}),
-				'columns': columns,
-				selModel: new Ext.selection.CheckboxModel(),
+				},
+				columns: columns,
+				selModel: Ext.create('Ext.selection.CheckboxModel'),
 				plugins: [
 					new Ext.grid.plugin.RowEditing({
 						clicksToEdit: 2,
