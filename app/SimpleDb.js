@@ -106,9 +106,10 @@ Ext.define('SdbNavigator.SimpleDb', {
 			}),
 			method: method,
 			success: function (response) {
-				self.boxUsage += parseFloat(Ext.DomQuery.selectValue('BoxUsage', response.responseXML));
-				Ext.getCmp('boxUsageValue').setText(Ext.util.Format.round(self.boxUsage, 10));
-				Ext.getCmp('boxUsageAmount').setText('( '+ Ext.util.Format.currency(self.boxUsage, '$', 2)+ ' )');
+				var lastBoxUsage = parseFloat(Ext.DomQuery.selectValue('BoxUsage', response.responseXML))
+				self.boxUsage += lastBoxUsage;
+				Ext.getCmp('boxUsageValue').setText(Ext.util.Format.round(lastBoxUsage, 10));
+				Ext.getCmp('boxUsageValueTotal').setText(Ext.util.Format.round(self.boxUsage, 10));
 				callback(response);
 			},
 			failure: function (response) {
