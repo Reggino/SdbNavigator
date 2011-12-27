@@ -91,6 +91,7 @@ Ext.define('SdbNavigator.controller.DomainTree', {
 					if (Ext.isDefined(selections[0]) && !selections[0].isLeaf() && !selections[0].isExpanded()) {
 						selections[0].expand();
 					}
+					Ext.getCmp('deleteDomainButton').setDisabled(!Ext.isDefined(selections[0]) || selections[0].isLeaf());
 				}
 			}
 		});
@@ -185,6 +186,7 @@ Ext.define('SdbNavigator.controller.DomainTree', {
 
 	deleteDomain: function () {
 		var toBeDeletedNode = Ext.getCmp('domainTreePanel').getSelectionModel().getSelection()[0];
+
 		Ext.Msg.confirm('Warning', 'Are you sure you want to delete the domain "' + toBeDeletedNode.data.text
 			+ '"? This operation can not be undone!', function (answer) {
 				if (answer === 'yes') {
