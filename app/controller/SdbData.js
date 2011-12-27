@@ -73,7 +73,6 @@ Ext.define('SdbNavigator.controller.SdbData', {
 
 		//first get all data from the selected domain to build a fitting store
 		SdbNavigator.SimpleDb.select(query, function (resultData) {
-			//domainAttributesCounts['itemName()']++;
 			//we have the data, now get the store up and running!
 			//First we need to check if the known columns are sufficient for the result
 			var domainNode = Ext.getCmp('domainTreePanel').getRootNode().findChild('expanded', true), domain = domainNode.data.text,

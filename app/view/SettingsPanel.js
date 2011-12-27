@@ -8,7 +8,7 @@ Ext.define('SdbNavigator.view.SettingsPanel', {
 	region: 'north',
 	layout: 'hbox',
 	itemId: 'settingsPanel',
-	height: 70,
+	height: 72,
 	tbar: {
 		xtype: 'toolbar',
 		items: [
@@ -23,16 +23,22 @@ Ext.define('SdbNavigator.view.SettingsPanel', {
 
 			'->', {
 				xtype: 'tbtext',
-				text: 'Released under GPL license v3'
-			}, '-', {
+				text: 'Box usage:'
+			}, {
 				xtype: 'tbtext',
-				text: 'JavaScript framework: <a href="http://www.sencha.com/products/extjs/">ExtJS 4 by Sencha</a>'
-			}, '-',	{
+				text: '0.0000000000',
+				id: 'boxUsageValue',
+				width: 68
+			}, {
 				xtype: 'tbtext',
-				text: 'Icons: <a target="_blank" href="http://www.famfamfam.com/">Mark James</a>'
-			}, '-', {
-				xtype: 'tbtext',
-				text: 'Development: <a target="_blank" href="http://www.kingsquare.nl/SdbNavigator/">Kingsquare</a>'
+				text: '( $ 0.00 )',
+				id: 'boxUsageAmount',
+				width: 38
+			}
+			, '-',	{
+				itemId: 'infoButton',
+				xtype: 'button',
+				icon: 'resources/img/icons/information.png'
 			}
 		]
 	},
@@ -149,7 +155,8 @@ Ext.define('SdbNavigator.view.SettingsPanel', {
 				{
 					xtype: 'button',
 					text: 'Connect',
-					anchor: '100%'
+					anchor: '100%',
+					itemId: 'connectButton'
 				}
 			]
 		}

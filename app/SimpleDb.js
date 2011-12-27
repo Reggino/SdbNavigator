@@ -3,6 +3,7 @@
 
 Ext.define('SdbNavigator.SimpleDb', {
 	singleton: true,
+	boxUsage: 0.0,
 
 	getQueryParts: function (query) {
 		// select output_list from domain_name [where expression] [sort_instructions] [limit limit]
@@ -87,7 +88,7 @@ Ext.define('SdbNavigator.SimpleDb', {
 	},
 
 	doQuery: function (method, params, callback) {
-		var host, signer;
+		var host, signer, self = this;
 		host = Ext.getCmp('region').getValue();
 		signer = new AWSV2Signer(Ext.getCmp('awsAccessKey').getValue(), Ext.getCmp('awsSecretKey').getValue());
 
@@ -104,7 +105,12 @@ Ext.define('SdbNavigator.SimpleDb', {
 				"uriPath": "/"
 			}),
 			method: method,
-			success: callback,
+			success: function (response) {
+				self.boxUsage += parseFloat(Ext.DomQuery.selectValue('BoxUsage', response.responseXML));
+				Ext.getCmp('boxUsageValue').setText(Ext.util.Format.round(self.boxUsage, 10));
+				Ext.getCmp('boxUsageAmount').setText('( '+ Ext.util.Format.currency(self.boxUsage, '$', 2)+ ' )');
+				callback(response);
+			},
 			failure: function (response) {
 				Ext.Msg.alert('Error', Ext.DomQuery.selectValue('Message', response.responseXML));
 			},
