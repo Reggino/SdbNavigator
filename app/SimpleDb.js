@@ -1,4 +1,4 @@
-/*jslint unparam: true, sloppy: true, maxerr: 50, indent: 4 */
+/*jslint unparam: true, sloppy: true */
 /*global Ext:false, SdbNavigator: false, AWSV2Signer: false */
 
 Ext.define('SdbNavigator.SimpleDb', {
@@ -61,7 +61,13 @@ Ext.define('SdbNavigator.SimpleDb', {
 	},
 
 	select: function (query, callback) {
-		var self = this, resultData = [], params = { Action: 'Select', SelectExpression: query }, doSelect = function () {
+		var self = this, resultData = [], queryParts = this.getQueryParts(query), queryLimit = -1, params = { Action: 'Select', SelectExpression: query }, doSelect;
+
+		if (Ext.isDefined(queryParts.limit)) {
+			queryLimit = parseInt(queryParts.limit, 10);
+		}
+
+		doSelect = function () {
 			self.doQuery('GET', params, function (response) {
 				Ext.each(Ext.DomQuery.select('SelectResult Item', response.responseXML), function (node) {
 					var result = {}, attributeNode = node.firstChild, attributeValueNode;
@@ -75,7 +81,7 @@ Ext.define('SdbNavigator.SimpleDb', {
 					resultData.push(result);
 				});
 				params.NextToken = Ext.DomQuery.selectValue('NextToken', response.responseXML);
-				if (!Ext.isEmpty(params.NextToken)) {
+				if (!Ext.isEmpty(params.NextToken) && ((queryLimit < 0) || (queryLimit > resultData.length))) {
 					doSelect();
 				} else {
 					Ext.getCmp('sdbDataGridPanelContainer').setLoading(false);
