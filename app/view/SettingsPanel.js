@@ -28,15 +28,15 @@ Ext.define('SdbNavigator.view.SettingsPanel', {
 				xtype: 'tbtext',
 				text: '0.0000000000',
 				id: 'boxUsageValue',
-				width: 64
-			}, {
+				width: 66
+			}, '-', {
 				xtype: 'tbtext',
 				text: '<h2>Total:</h2>'
 			}, {
 				xtype: 'tbtext',
 				text: '0.0000000000',
 				id: 'boxUsageValueTotal',
-				width: 64
+				width: 66
 			}, '-',	{
 				itemId: 'infoButton',
 				xtype: 'button',
