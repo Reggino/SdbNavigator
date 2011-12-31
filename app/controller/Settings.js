@@ -46,17 +46,24 @@ Ext.define('SdbNavigator.controller.Settings', {
 	},
 
 	listDomains: function (settingsPanel) {
-		var domainStore = Ext.StoreManager.lookup('Domains');
-		if (settingsPanel.getForm().isValid()) {
-			SdbNavigator.SimpleDb.doQuery('GET', {
-				Action: 'ListDomains'
-			}, function (response) {
-				domainStore.removeAll();
+		var domainStore = Ext.StoreManager.lookup('Domains'), params = {
+			Action: 'ListDomains'
+		}, doList =  function () {
+			SdbNavigator.SimpleDb.doQuery('GET', params, function (response) {
 				Ext.each(Ext.DomQuery.select('DomainName', response.responseXML), function (xmlNode) {
 					domainStore.add({ name: xmlNode.childNodes[0].data });
 				});
-				Ext.getCmp('domainTreePanel').setDisabled(false);
+				params.NextToken = Ext.DomQuery.selectValue('NextToken', response.responseXML);
+				if (!Ext.isEmpty(params.NextToken)) {
+					doList();
+				} else {
+					Ext.getCmp('domainTreePanel').setDisabled(false);
+				}
 			});
+		};
+		if (settingsPanel.getForm().isValid()) {
+			domainStore.removeAll();
+			doList();
 		}
 	}
 });
