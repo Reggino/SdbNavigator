@@ -3,7 +3,6 @@
 
 Ext.define('SdbNavigator.view.SettingsPanel', {
     extend: 'Ext.form.Panel',
-	xtype: 'form',
 	title: '',
 	region: 'north',
 	layout: 'hbox',

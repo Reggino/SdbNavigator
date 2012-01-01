@@ -3,11 +3,12 @@
 
 Ext.define('SdbNavigator.controller.Settings', {
     extend: 'Ext.app.Controller',
+	views: ['SettingsPanel'],
 
 	init: function () {
 		this.control({
 			'#settingsPanel': {
-				render: function (settingsPanel) {
+				afterrender: function (settingsPanel) {
 					if ((Ext.getCmp('region').getValue() !== '') && (Ext.getCmp('awsAccessKey').getValue() !== '')
 							&& (Ext.getCmp('awsSecretKey').getValue() !== '')) {
 						this.listDomains(settingsPanel);

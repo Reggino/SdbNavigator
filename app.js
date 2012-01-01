@@ -1,9 +1,5 @@
-Ext.require(['Ext.state.CookieProvider', 'Ext.form.Label', 'Ext.form.field.ComboBox', 'Ext.data.TreeStore',
-		'Ext.container.Viewport', 'Ext.layout.container.Border', 'Ext.form.field.Display',
-		'Ext.grid.PagingScroller', 'Ext.data.proxy.LocalStorage', 'Ext.grid.Panel',
-		'SdbNavigator.controller.DomainTree', 'SdbNavigator.controller.SdbData', 'SdbNavigator.controller.Settings',
-		'Ext.grid.plugin.RowEditing', 'Ext.selection.CheckboxModel', 'SdbNavigator.SimpleDb',
-	'SdbNavigator.view.SdbDataPanel', 'SdbNavigator.view.SettingsPanel'
+Ext.require(['SdbNavigator.controller.DomainTree', 'SdbNavigator.controller.SdbData', 'SdbNavigator.controller.Settings',
+		'SdbNavigator.SimpleDb'
 ], function () {
 	Ext.application({
 		id: 'SdbNavigator',
@@ -15,14 +11,14 @@ Ext.require(['Ext.state.CookieProvider', 'Ext.form.Label', 'Ext.form.field.Combo
 			Ext.create('Ext.container.Viewport', {
 				layout: 'border',
 				items: [
-					new SdbNavigator.view.SettingsPanel(),
+					Ext.create('SdbNavigator.view.SettingsPanel'),
 					{
 						xtype: 'panel',
 						region: 'center',
 						layout: 'border',
 						items: [
-							new SdbNavigator.view.domain.TreePanel(),
-							new SdbNavigator.view.SdbDataPanel()
+							Ext.create('SdbNavigator.view.domain.TreePanel'),
+							Ext.create('SdbNavigator.view.SdbDataPanel')
 						]
 					}
 				]

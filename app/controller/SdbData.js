@@ -3,6 +3,7 @@
 
 Ext.define('SdbNavigator.controller.SdbData', {
 	extend: 'Ext.app.Controller',
+	views: ['SdbDataPanel'],
 
 	init: function () {
 		var self = this, rowContextMenu;
