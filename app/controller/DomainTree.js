@@ -1,4 +1,4 @@
-/*jslint unparam: true, sloppy: true, maxerr: 50, indent: 4 */
+/*jslint unparam: true, sloppy: true */
 /*global Ext:false, SdbNavigator: false */
 
 Ext.define('SdbNavigator.controller.DomainTree', {
@@ -19,8 +19,8 @@ Ext.define('SdbNavigator.controller.DomainTree', {
 					});
 				});
 			},
-			remove: function () {
-				Ext.getCmp('domainTreePanel').getRootNode().getChildAt(arguments[2]).remove();
+			remove: function (store, record, index) {
+				Ext.getCmp('domainTreePanel').getRootNode().getChildAt(index).remove();
 			},
 			clear: function () {
 				Ext.getCmp('domainTreePanel').getRootNode().removeAll();
@@ -88,10 +88,7 @@ Ext.define('SdbNavigator.controller.DomainTree', {
 					}
 				},
 				'selectionchange': function (treepanel, selections) {
-					if (Ext.isDefined(selections[0]) && !selections[0].isLeaf() && !selections[0].isExpanded()) {
-						selections[0].expand();
-					}
-					Ext.getCmp('deleteDomainButton').setDisabled(!Ext.isDefined(selections[0]) || selections[0].isLeaf());
+					Ext.getCmp('deleteDomainButton').setDisabled(!(Ext.isDefined(selections[0]) && !selections[0].isLeaf()));
 				}
 			}
 		});
@@ -160,7 +157,6 @@ Ext.define('SdbNavigator.controller.DomainTree', {
 		Ext.getCmp('queryTextarea').setValue('select * from ' + SdbNavigator.SimpleDb.quoteAttribute(domainNode.data.text) + ' limit ' + Ext.getCmp('defaultQueryLimit').getValue());
 		this.getController('SdbData').runQuery(Ext.getCmp('queryTextarea').getValue());
 		Ext.getCmp('centerPanel').setDisabled(false);
-		Ext.getCmp('deleteDomainButton').setDisabled(false);
 		Ext.getCmp('deleteRecordButton').setDisabled(true);
 	},
 
@@ -197,7 +193,6 @@ Ext.define('SdbNavigator.controller.DomainTree', {
 						var domainStore = Ext.StoreManager.lookup('Domains');
 						domainStore.remove(domainStore.findRecord('name', toBeDeletedNode.data.text));
 						Ext.getCmp('centerPanel').setDisabled(true);
-						Ext.getCmp('deleteDomainButton').setDisabled(true);
 					});
 				}
 			});
