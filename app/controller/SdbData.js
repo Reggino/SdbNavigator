@@ -50,8 +50,8 @@ Ext.define('SdbNavigator.controller.SdbData', {
 			},
 			'#deleteRecordButton': {
 				'click': function () {
-					Ext.each(Ext.getCmp('sdbDataGrid').getSelectionModel().getSelection(), function (record) {
-						Ext.getCmp('sdbDataGrid').getStore().remove(record);
+					Ext.each(Ext.getCmp('sdbDataGrid').getSelectionModel().getSelection(), function (records) {
+						Ext.getCmp('sdbDataGrid').getStore().remove(records);
 					});
 				}
 			},
@@ -104,12 +104,10 @@ Ext.define('SdbNavigator.controller.SdbData', {
 				columns.push({
 					text: attribute,
 					dataIndex: attribute,
-					flex: 1,
-					editable: false,
 					id: uniqueId + '_' + index,
+					flex: 1,
 					editor:  {
 						xtype: 'textfield',
-						flex: 1,
 						editable: false,
 						allowBlank: (attribute !== 'itemName()')
 					}
@@ -147,9 +145,9 @@ Ext.define('SdbNavigator.controller.SdbData', {
 					}
 				},
 				columns: columns,
-				selModel: Ext.create('Ext.selection.CheckboxModel'),
+				selModel: Ext.create('Ext.selection.RowModel', { mode: 'MULTI' }),
 				plugins: [
-					new Ext.grid.plugin.RowEditing({
+					Ext.create('Ext.grid.plugin.RowEditing', {
 						clicksToEdit: 2,
 						listeners: {
 							beforeedit: function (context) {
@@ -198,8 +196,7 @@ Ext.define('SdbNavigator.controller.SdbData', {
 									updateRecord(context.record);
 								}
 							}
-						},
-						errorSummary: false
+						}
 					})
 				]
 			});

@@ -14,6 +14,7 @@ Ext.define('SdbNavigator.view.SdbDataPanel', {
 			region: 'north',
 			layout: 'fit',
 			split: true,
+			height: 70,
 			items: [
 				{
 					id: 'queryTextarea',

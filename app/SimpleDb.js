@@ -116,7 +116,9 @@ Ext.define('SdbNavigator.SimpleDb', {
 				self.boxUsage += lastBoxUsage;
 				Ext.getCmp('boxUsageValue').setText(Ext.util.Format.round(lastBoxUsage, 10));
 				Ext.getCmp('boxUsageValueTotal').setText(Ext.util.Format.round(self.boxUsage, 10));
-				callback(response);
+				if (Ext.isDefined(callback)) {
+					callback(response);
+				}
 			},
 			failure: function (response) {
 				Ext.Msg.alert('Error', Ext.DomQuery.selectValue('Message', response.responseXML));

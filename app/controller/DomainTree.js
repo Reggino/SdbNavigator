@@ -88,7 +88,11 @@ Ext.define('SdbNavigator.controller.DomainTree', {
 					}
 				},
 				'selectionchange': function (treepanel, selections) {
-					Ext.getCmp('deleteDomainButton').setDisabled(!(Ext.isDefined(selections[0]) && !selections[0].isLeaf()));
+					Ext.getCmp('deleteDomainButton').setDisabled(true);
+					if (Ext.isDefined(selections[0]) && !selections[0].isLeaf()) {
+						Ext.getCmp('deleteDomainButton').setDisabled(false);
+						selections[0].expand();
+					}
 				}
 			}
 		});
