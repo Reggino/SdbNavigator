@@ -169,7 +169,7 @@ Ext.define('SdbNavigator.controller.DomainTree', {
 		Ext.Msg.prompt('New domain', 'Please enter the new domain name:', function (btn, text) {
 			if (btn === 'ok') {
 				text = Ext.String.trim(text);
-				if (Ext.isEmpty(domainStore.findRecord('name', text))) {
+				if (Ext.isEmpty(domainStore.findRecord('name', text, 0, false, true, true))) {
 					SdbNavigator.SimpleDb.doQuery('GET', {
 						Action: 'CreateDomain',
 						DomainName: text
