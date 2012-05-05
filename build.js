@@ -21,6 +21,7 @@ stdin.once('data', function(input) {
 	//console.log('Setting up (stripped) directory structure');
 	wrench.rmdirSyncRecursive('./build', true);
 	wrench.mkdirSyncRecursive('./build/extjs/resources/themes/images');
+	wrench.mkdirSyncRecursive('./build/extjs/resources/css');
 	wrench.copyDirSyncRecursive('./app', './build/app');
 	wrench.copyDirSyncRecursive('./extjs/resources/themes/images/default', './build/extjs/resources/themes/images/default');
 	wrench.copyDirSyncRecursive('./resources', './build/resources');
@@ -28,6 +29,7 @@ stdin.once('data', function(input) {
 	//copy the final files
 	fs.writeFileSync('./build/extjs/ext-all.js', fs.readFileSync('./extjs/ext-all.js'));
 	fs.writeFileSync('./build/extjs/license.txt', fs.readFileSync('./extjs/license.txt'));
+	fs.writeFileSync('./build/extjs/resources/css/ext-all.css', fs.readFileSync('./extjs/resources/css/ext-all.css'));
 	fs.writeFileSync('./build/app.js', fs.readFileSync('./app.js'));
 	fs.writeFileSync('./build/extension.html', fs.readFileSync('./extension.html'));
 
