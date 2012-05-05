@@ -4,7 +4,7 @@
 Ext.define('SdbNavigator.controller.DomainTree', {
 	extend: 'Ext.app.Controller',
 	models: [ 'Domain' ],
-	views: [ 'domain.TreePanel' ],
+	views: ['domain.TreePanel'],
 	stores: ['Domains'],
 
 	init: function () {

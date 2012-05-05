@@ -3,6 +3,7 @@
 
 Ext.define('SdbNavigator.controller.Settings', {
     extend: 'Ext.app.Controller',
+	requires: ['SdbNavigator.SimpleDb'],
 	views: ['SettingsPanel'],
 
 	init: function () {

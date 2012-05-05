@@ -145,20 +145,20 @@ Ext.define('SdbNavigator.controller.SdbData', {
 					}
 				},
 				columns: columns,
-				selModel: Ext.create('Ext.selection.RowModel', { mode: 'MULTI' }),
+				selModel: Ext.create('Ext.selection.CheckboxModel'),
 				plugins: [
 					Ext.create('Ext.grid.plugin.RowEditing', {
 						clicksToEdit: 2,
 						listeners: {
-							beforeedit: function (context) {
+							beforeedit: function (editor, context) {
 								this.editor.query('textfield[name="itemName()"]')[0].setDisabled(!Ext.isEmpty(context.record.raw));
 							},
-							canceledit: function (context, eOpts) {
+							canceledit: function (editor, context) {
 								if (Ext.isEmpty(context.record.raw)) {
 									context.store.remove(context.record);
 								}
 							},
-							edit: function (context) {
+							edit: function (editor, context) {
 								var updateRecord = function (record) {
 									var grid, propCount = 1, params = {
 										DomainName:  domain,
