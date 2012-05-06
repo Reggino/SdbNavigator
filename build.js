@@ -6,11 +6,16 @@
 * - install node / npm
 * - run:
 *			npm install wrench -g
-*			npm install zipper -g
+*			npm install node-native-zip -g
 * - run this script
 *
 */
-var stdin = process.stdin, util = require('util'), wrench = require('wrench'), fs = require('fs');
+var stdin = process.stdin, util = require('util'), wrench = require('wrench'), fs = require('fs'), _path = require("path"),
+	zip = require("node-native-zip"), archive = new zip(), isFile, archiveFiles = [];
+
+isFile = function(fname){
+	return !fs.statSync( fname ).isDirectory();
+};
 
 stdin.resume();
 console.log('What is the new build version: ');
@@ -42,7 +47,24 @@ stdin.once('data', function(input) {
 	fs.writeFileSync('./build/manifest.json', JSON.stringify(manifest));
 
 	//zip it up!
-	//zip zip zip
+	wrench.readdirSyncRecursive('./build/').filter(isFile).forEach(function (file) {
+		archiveFiles.push({ name: file.substr(6), path: file});
+	});
 
-	console.log('done! Build available in folder "build". Zip it up install a Chrome plugin!');
+	console.log('All files copied and prepared! Start zipping....');
+	archive.addFiles(archiveFiles, function (err) {
+		var buff;
+		if (err) {
+			return console.log("err while adding files", err);
+		}
+
+		buff = archive.toBuffer();
+		fs.writeFile("./build/build.zip", buff, function () {
+			console.log('done! Build available in folder "build". Plugin is packed in ./build/build.zip');
+			setTimeout(function() {
+				//make sure we actually see the output message!
+				process.exit();
+			}, 1000);
+		});
+	});
 });
