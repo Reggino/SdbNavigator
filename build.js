@@ -23,7 +23,6 @@ stdin.once('data', function(input) {
 	var manifest, version = input.toString().trim();
 	console.log('Will now build: ' + version + '...');
 
-	//console.log('Setting up (stripped) directory structure');
 	wrench.rmdirSyncRecursive('./build', true);
 	wrench.mkdirSyncRecursive('./build/extjs/resources/themes/images');
 	wrench.mkdirSyncRecursive('./build/extjs/resources/css');
@@ -60,7 +59,7 @@ stdin.once('data', function(input) {
 
 		buff = archive.toBuffer();
 		fs.writeFile("./build/build.zip", buff, function () {
-			console.log('done! Build available in folder "build". Plugin is packed in ./build/build.zip');
+			console.log('Done! Build available in folder "build". Plugin is packed in ./build/build.zip');
 			setTimeout(function() {
 				//make sure we actually see the output message!
 				process.exit();

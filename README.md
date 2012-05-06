@@ -50,4 +50,7 @@ Contributing
 Build your own version of the plugin
 --------
 
-See http://code.google.com/chrome/extensions/getstarted.html#load and use the source provided
+1. Download and install node.js
+2. Install using npm 'wrench' and 'node-native-zip'
+3. Build the plugin version of your source, using `node build.js`
+4. See http://code.google.com/chrome/extensions/getstarted.html#load for how to install it in Chrome
