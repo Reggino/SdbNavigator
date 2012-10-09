@@ -41,7 +41,14 @@ Ext.define('SdbNavigator.view.SdbDataPanel', {
 				{ xtype: 'button', id: 'addRecordButton', text: 'Add record', icon: 'resources/img/icons/table_row_insert.png' },
 				{ xtype: 'button', id: 'deleteRecordButton', text: 'Delete record', icon: 'resources/img/icons/table_row_delete.png' },
 				'|',
-				{ xtype: 'button', id: 'addPropertyButton', text: 'Add property', icon: 'resources/img/icons/textfield_add.png' }
+				{ xtype: 'button', id: 'addPropertyButton', text: 'Add property', icon: 'resources/img/icons/textfield_add.png' },
+				'->',
+				{
+					xtype: 'button',
+					id: 'exportJsonButton',
+					text: 'Export results as JSON',
+					icon: 'resources/img/icons/database_save.png'
+				}
 			]
 		}
 	]

@@ -68,6 +68,13 @@ Ext.define('SdbNavigator.controller.SdbData', {
 				'click': function () {
 					self.runQuery(Ext.getCmp('queryTextarea').getValue());
 				}
+			},
+			'#exportJsonButton': {
+				'click': function () {
+					SdbNavigator.SimpleDb.select(Ext.getCmp('queryTextarea').getValue(), function (resultData) {
+						window.location = 'data:application/json,' + encodeURIComponent(Ext.JSON.encode(resultData));
+					});
+				}
 			}
 		});
     },
