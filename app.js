@@ -1,3 +1,12 @@
+Ext.Loader.setConfig({
+	enabled: true,
+	paths: {
+		'Ext': 'extjs/src',
+		'SdbNavigator': 'app'
+	}
+	//		, disableCaching: false //http://www.sencha.com/forum/showthread.php?132733-Debugging-seem-to-lose-breakpoints
+});
+
 Ext.application({
 	id: 'SdbNavigator',
 	name: 'SdbNavigator',

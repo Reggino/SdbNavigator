@@ -36,6 +36,7 @@ stdin.once('data', function(input) {
 	fs.writeFileSync('./build/extjs/resources/css/ext-all.css', fs.readFileSync('./extjs/resources/css/ext-all.css'));
 	fs.writeFileSync('./build/app.js', fs.readFileSync('./app.js'));
 	fs.writeFileSync('./build/extension.html', fs.readFileSync('./extension.html'));
+	fs.writeFileSync('./build/extension.js', fs.readFileSync('./extension.js'));
 
 	//install production ext.js!
 	fs.writeFileSync('./build/index.html', fs.readFileSync('./index.html').toString().replace('ext-all-dev.js', 'ext-all.js'));
