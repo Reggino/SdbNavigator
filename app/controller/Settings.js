@@ -40,7 +40,7 @@ Ext.define('SdbNavigator.controller.Settings', {
 							'<p>Icons: <a target="_blank" href="http://www.famfamfam.com/">Mark James</a></p>' +
 							'<p>Development and idea: <a target="_blank" href="http://www.kingsquare.nl/SdbNavigator/">Kingsquare</a></p>' +
 							'<br/>' +
-							'<p>Feedback, bugs, suggestions or feature requests? Please leave them at <a href="https://github.com/Kingsquare/SdbNavigator/issues">Github</a> or send a \'pull request\' for your improvement.'
+							'<p>Feedback, bugs, suggestions or feature requests? Please leave them at <a href="https://github.com/Reggino/SdbNavigator/issues">Github</a> or send a \'pull request\' for your improvement.'
 					);
 				}
 			}

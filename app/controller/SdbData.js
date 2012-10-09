@@ -50,8 +50,12 @@ Ext.define('SdbNavigator.controller.SdbData', {
 			},
 			'#deleteRecordButton': {
 				'click': function () {
-					Ext.each(Ext.getCmp('sdbDataGrid').getSelectionModel().getSelection(), function (records) {
-						Ext.getCmp('sdbDataGrid').getStore().remove(records);
+					Ext.Msg.confirm('Are you sure?', 'Are you sure you want to delete the selection?', function (response) {
+						if (response == 'yes') {
+							Ext.each(Ext.getCmp('sdbDataGrid').getSelectionModel().getSelection(), function (records) {
+								Ext.getCmp('sdbDataGrid').getStore().remove(records);
+							});
+						}
 					});
 				}
 			},
