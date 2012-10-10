@@ -9,8 +9,9 @@
 	},
 	"icons": {
 		"16": "resources/img/icon16.png",
-        "48": "resources/img/icon48.png",
-        "128": "resources/img/icon128.png" },
+		"48": "resources/img/icon48.png",
+		"128": "resources/img/icon128.png"
+	},
 	"content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
 	"permissions": [
 		"tabs",

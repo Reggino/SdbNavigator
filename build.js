@@ -49,7 +49,7 @@ stdin.once('data', function(input) {
 	//zip it up!
 	wrench.readdirSyncRecursive('./build/').filter(isFile).forEach(function (file) {
 		var filePathChunks = file.split('/');
-		archiveFiles.push({ name: filePathChunks[filePathChunks.length-1], path: file});
+		archiveFiles.push({ name: filePathChunks[filePathChunks.length-1], path: './build/' + file});
 	});
 
 	console.log('All files copied and prepared! Start zipping....');
