@@ -24,7 +24,7 @@ Ext.define('SdbNavigator.controller.SdbData', {
 			'#sdbDataGrid': {
 				render: function (grid) {
 					grid.getStore().addListener('remove', function (store, record) {
-						if (!Ext.isEmpty(record.raw)) {
+						if (!record.phantom) {
 							SdbNavigator.SimpleDb.doQuery('GET', {
 								Action: 'DeleteAttributes',
 								DomainName: Ext.getCmp('domainTreePanel').getRootNode().findChild('expanded', true).data.text,
@@ -72,7 +72,7 @@ Ext.define('SdbNavigator.controller.SdbData', {
 			'#exportJsonButton': {
 				'click': function () {
 					SdbNavigator.SimpleDb.select(Ext.getCmp('queryTextarea').getValue(), function (resultData) {
-						window.location = 'data:application/json,' + encodeURIComponent(Ext.JSON.encode(resultData));
+						window.open('data:application/json,' + encodeURIComponent(Ext.JSON.encode(resultData)));
 					});
 				}
 			}
@@ -162,10 +162,10 @@ Ext.define('SdbNavigator.controller.SdbData', {
 						clicksToEdit: 2,
 						listeners: {
 							beforeedit: function (editor, context) {
-								this.editor.query('textfield[name="itemName()"]')[0].setDisabled(!Ext.isEmpty(context.record.raw));
+								this.editor.query('textfield[name="itemName()"]')[0].setDisabled(!context.record.phantom);
 							},
 							canceledit: function (editor, context) {
-								if (Ext.isEmpty(context.record.raw)) {
+								if (context.record.phantom) {
 									context.store.remove(context.record);
 								}
 							},
@@ -191,7 +191,7 @@ Ext.define('SdbNavigator.controller.SdbData', {
 									});
 								};
 
-								if (Ext.isEmpty(context.record.raw)) {
+								if (context.record.phantom) {
 									SdbNavigator.SimpleDb.select('select COUNT(*) from ' +  SdbNavigator.SimpleDb.quoteAttribute(domain) + ' where itemName() = ' + SdbNavigator.SimpleDb.quoteValue(context.record.get('itemName()')), function (data) {
 										if (parseInt(data[0].Count, 10) === 0) {
 											updateRecord(context.record);
