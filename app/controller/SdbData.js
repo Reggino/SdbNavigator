@@ -85,11 +85,17 @@ Ext.define('SdbNavigator.controller.SdbData', {
 
 		//first get all data from the selected domain to build a fitting store
 		SdbNavigator.SimpleDb.select(query, function (resultData) {
+			var domainNode, domain, existingColumns, missingColumns, fields, sortData, sortDirection, columnHeader,
+					uniqueId, columns;
+
 			//we have the data, now get the store up and running!
 			//First we need to check if the known columns are sufficient for the result
-			var domainNode = Ext.getCmp('domainTreePanel').getRootNode().findChild('expanded', true), domain = domainNode.data.text,
-					existingColumns = ['itemName()'], missingColumns = null, fields = [], sortData, sortDirection,
-					columnHeader, uniqueId = Ext.id(), columns = [];
+			domainNode = Ext.getCmp('domainTreePanel').getRootNode().findChild('expanded', true);
+			domain = domainNode.data.text;
+			existingColumns = ['itemName()'];
+			fields = [];
+			uniqueId = Ext.id();
+			columns = [];
 
 			Ext.each(resultData, function (record) {
 				Ext.each(Ext.Object.getKeys(record), function (recordProperty) {
@@ -139,7 +145,9 @@ Ext.define('SdbNavigator.controller.SdbData', {
 						type: 'memory',
 						reader: {
 							type: 'json',
-							idProperty: 'itemName()'
+							idProperty: 'itemName()',
+							//http://www.sencha.com/forum/showthread.php?205662
+							useSimpleAccessors: true
 						}
 					},
 					sort: function (sortOptions) {
@@ -171,7 +179,7 @@ Ext.define('SdbNavigator.controller.SdbData', {
 							},
 							edit: function (editor, context) {
 								var updateRecord = function (record) {
-									var grid, propCount = 1, params = {
+									var propCount = 1, params = {
 										DomainName:  domain,
 										Action: 'PutAttributes',
 										ItemName: record.get('itemName()')
