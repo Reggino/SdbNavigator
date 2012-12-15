@@ -10,12 +10,7 @@
 * - run this script
 *
 */
-var stdin = process.stdin, util = require('util'), wrench = require('wrench'), fs = require('fs'), _path = require("path"),
-	zip = require("node-native-zip"), archive = new zip(), isFile, archiveFiles = [];
-
-isFile = function(fname){
-	return !fs.statSync( fname ).isDirectory();
-};
+var stdin = process.stdin, wrench = require('wrench'), fs = require('fs');
 
 stdin.resume();
 console.log('What is the new build version: ');
@@ -46,26 +41,9 @@ stdin.once('data', function(input) {
 	manifest.version = version;
 	fs.writeFileSync('./build/manifest.json', JSON.stringify(manifest));
 
-	//zip it up!
-	wrench.readdirSyncRecursive('./build/').filter(isFile).forEach(function (file) {
-		var filePathChunks = file.split('/');
-		archiveFiles.push({ name: filePathChunks[filePathChunks.length-1], path: './build/' + file});
-	});
-
-	console.log('All files copied and prepared! Start zipping....');
-	archive.addFiles(archiveFiles, function (err) {
-		var buff;
-		if (err) {
-			return console.log("err while adding files", err);
-		}
-
-		buff = archive.toBuffer();
-		fs.writeFile("./build/build.zip", buff, function () {
-			console.log('Done! Build available in folder "build". Plugin is packed in ./build/build.zip');
-			setTimeout(function() {
-				//make sure we actually see the output message!
-				process.exit();
-			}, 1000);
-		});
-	});
+	console.log('All files copied and prepared! Zip and upload the build-folder....');
+	setTimeout(function() {
+		//make sure we actually see the output message!
+		process.exit();
+	}, 1000);
 });
