@@ -34,7 +34,7 @@ stdin.once('data', function(input) {
 	fs.writeFileSync('./build/extension.js', fs.readFileSync('./extension.js'));
 
 	//install production ext.js!
-	fs.writeFileSync('./build/index.html', fs.readFileSync('./index.html').toString().replace('ext-all-dev.js', 'ext-all.js'));
+	fs.writeFileSync('./build/index.html', fs.readFileSync('./index.html').toString().replace('ext-dev.js', 'ext-all.js'));
 
 	//make and write the final
 	manifest = JSON.parse(fs.readFileSync('./manifest.json'));

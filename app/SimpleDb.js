@@ -25,8 +25,8 @@ Ext.define('SdbNavigator.SimpleDb', {
 			if (Ext.isDefined(queryAnalysis[8])) {
 				queryParts.limit = queryAnalysis[8];
 			}
-			return queryParts;
 		}
+		return queryParts;
 	},
 
 	mergeQueryParts: function (queryParts) {
@@ -112,7 +112,7 @@ Ext.define('SdbNavigator.SimpleDb', {
 			}),
 			method: method,
 			success: function (response) {
-				var lastBoxUsage = parseFloat(Ext.DomQuery.selectValue('BoxUsage', response.responseXML))
+				var lastBoxUsage = parseFloat(Ext.DomQuery.selectValue('BoxUsage', response.responseXML));
 				self.boxUsage += lastBoxUsage;
 				Ext.getCmp('boxUsageValue').setText(Ext.util.Format.round(lastBoxUsage, 10));
 				Ext.getCmp('boxUsageValueTotal').setText(Ext.util.Format.round(self.boxUsage, 10));

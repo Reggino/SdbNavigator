@@ -118,7 +118,7 @@ Ext.define('SdbNavigator.controller.SdbData', {
 													chunks.push(chunk);
 													chunk = {};
 													itemCount = 1;
-												};
+												}
 											});
 											if (itemCount > 1) {
 												//add the last chunk;
@@ -165,8 +165,7 @@ Ext.define('SdbNavigator.controller.SdbData', {
 
 		//first get all data from the selected domain to build a fitting store
 		SdbNavigator.SimpleDb.select(query, function (resultData) {
-			var domainNode, domain, existingColumns, missingColumns, fields, sortData, sortDirection, columnHeader,
-					uniqueId, columns;
+			var domainNode, domain, existingColumns, missingColumns, fields, sortData, sortDirection, uniqueId, columns, sorters;
 
 			//we have the data, now get the store up and running!
 			//First we need to check if the known columns are sufficient for the result
@@ -176,6 +175,7 @@ Ext.define('SdbNavigator.controller.SdbData', {
 			fields = [];
 			uniqueId = Ext.id();
 			columns = [];
+			sorters = [];
 
 			Ext.each(resultData, function (record) {
 				Ext.each(Ext.Object.getKeys(record), function (recordProperty) {
@@ -213,6 +213,17 @@ Ext.define('SdbNavigator.controller.SdbData', {
 
 			Ext.getCmp('addRecordButton').setDisabled(columns.length === 1);
 
+			// try to detect the sorting column and direction, so we can highlight it!
+			if (!Ext.isEmpty(queryParts.sort)) {
+				sortData = queryParts.sort.split(' ');
+				sortDirection = sortData.pop();
+				sorters.push({
+					direction: sortDirection,
+					property: SdbNavigator.SimpleDb.unquoteAttribute(sortData.join(' ')),
+					sorterFn: Ext.emptyFn
+				});
+			}
+
 			//connect it to the grid view!
 			sdbDataGridPanelContainer.removeAll();
 			sdbDataGridPanelContainer.add({
@@ -230,16 +241,16 @@ Ext.define('SdbNavigator.controller.SdbData', {
 							useSimpleAccessors: true
 						}
 					},
+					remoteSort: true,
+					sortOnLoad: false,
+					sorters: sorters,
 					sort: function (sortOptions) {
-						var newQuery;
 						if (Ext.isObject(sortOptions)) {
 							queryParts.where =  SdbNavigator.SimpleDb.quoteAttribute(sortOptions.property) + ' is not null';
 							queryParts.sort = SdbNavigator.SimpleDb.quoteAttribute(sortOptions.property) + ' ' + sortOptions.direction;
 							newQuery = SdbNavigator.SimpleDb.mergeQueryParts(queryParts);
 							Ext.getCmp('queryTextarea').setValue(newQuery);
 							self.runQuery(newQuery);
-						} else {
-							return false;
 						}
 					}
 				},
@@ -299,16 +310,6 @@ Ext.define('SdbNavigator.controller.SdbData', {
 					})
 				]
 			});
-
-			// try to detect the sorting column and direction, so we can highlight it!
-			if (!Ext.isEmpty(queryParts.sort)) {
-				sortData = queryParts.sort.split(' ');
-				sortDirection = sortData.pop();
-				columnHeader = sdbDataGridPanelContainer.query('gridcolumn[dataIndex=' +  SdbNavigator.SimpleDb.unquoteAttribute(sortData.join(' ')) + ']');
-				if (!Ext.isEmpty(columnHeader)) {
-					columnHeader[0].setSortState(sortDirection, false, true);
-				}
-			}
 		});
 	}
 });

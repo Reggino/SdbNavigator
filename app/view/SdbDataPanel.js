@@ -3,6 +3,7 @@
 
 Ext.define('SdbNavigator.view.SdbDataPanel', {
     extend: 'Ext.panel.Panel',
+	alias: 'widget.sdbdatapanel',
 
 	layout: 'border',
 	region: 'center',
