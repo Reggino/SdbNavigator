@@ -69,6 +69,86 @@ Ext.define('SdbNavigator.controller.SdbData', {
 					self.runQuery(Ext.getCmp('queryTextarea').getValue());
 				}
 			},
+			'#importJsonButton': {
+				'click': function () {
+					var window = Ext.create('Ext.window.Window', {
+						title: 'Import JSON - please paste your (valid) JSON code',
+						height: 400,
+						width: 400,
+						autoShow: true,
+						modal: true,
+						layout: 'fit',
+						items: [{
+							xtype: 'textarea',
+							id: 'importJsonTextArea'
+						}],
+						buttons: [
+							{
+								text: 'Start import',
+								listeners: {
+									click: function () {
+										var domain, inputValue, itemCount = 1, propCount = 1, chunk = {}, chunks = [], importedChunkCount = 0, doImport;
+
+										domain = Ext.getCmp('domainTreePanel').getRootNode().findChild('expanded', true).data.text;
+										inputValue = Ext.JSON.decode(Ext.getCmp('importJsonTextArea').getValue(), true);
+
+										if (!Ext.isArray(inputValue)) {
+											Ext.Msg.alert('Import failed', 'Please provide a valid, JSON formatted array');
+										} else {
+											window.setLoading(true);
+
+											// chunk per 25, as stated in the manual
+											inputValue.forEach(function (record) {
+												if (record['itemName()'] === undefined) {
+													record['itemName()'] = uuid.v1();
+												}
+
+												propCount = 1;
+												Ext.Object.each(record, function (propName, propValue) {
+													if (propName === 'itemName()') {
+														chunk['Item.' + itemCount + '.ItemName'] = propValue;
+													} else {
+														chunk['Item.' + itemCount + '.Attribute.' + propCount + '.Name'] = propName;
+														chunk['Item.' + itemCount + '.Attribute.' + propCount + '.Value'] = propValue;
+														chunk['Item.' + itemCount + '.Attribute.' + propCount + '.Replace'] = true;
+														propCount += 1;
+													}
+												});
+												if (++itemCount === 26) {
+													chunks.push(chunk);
+													chunk = {};
+													itemCount = 1;
+												};
+											});
+											if (itemCount > 1) {
+												//add the last chunk;
+												chunks.push(chunk);
+											}
+
+											doImport = function() {
+												var chunk;
+												if (chunks[importedChunkCount] !== undefined) {
+													chunk = chunks[importedChunkCount];
+													chunk.DomainName = domain;
+													chunk.Action = 'BatchPutAttributes';
+													SdbNavigator.SimpleDb.doQuery('GET', chunk, function () {
+														importedChunkCount++;
+														doImport();
+													});
+												} else {
+													window.close();
+													self.runQuery(Ext.getCmp('queryTextarea').getValue());
+												}
+											};
+											doImport();
+										}
+									}
+								}
+							}
+						]
+					});
+				}
+			},
 			'#exportJsonButton': {
 				'click': function () {
 					SdbNavigator.SimpleDb.select(Ext.getCmp('queryTextarea').getValue(), function (resultData) {

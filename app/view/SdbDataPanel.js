@@ -45,8 +45,14 @@ Ext.define('SdbNavigator.view.SdbDataPanel', {
 				'->',
 				{
 					xtype: 'button',
+					id: 'importJsonButton',
+					text: 'Import JSON',
+					icon: 'resources/img/icons/database_gear.png'
+				},
+				{
+					xtype: 'button',
 					id: 'exportJsonButton',
-					text: 'Export results as JSON',
+					text: 'Export JSON',
 					icon: 'resources/img/icons/database_save.png'
 				}
 			]
