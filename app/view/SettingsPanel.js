@@ -115,6 +115,7 @@ Ext.define('SdbNavigator.view.SettingsPanel', {
 						['sdb.us-west-2.amazonaws.com', 'US-West (Oregon)'],
 						['sdb.eu-west-1.amazonaws.com', 'EU (Ireland)'],
 						['sdb.ap-southeast-1.amazonaws.com', 'Asia Pacific (Singapore)'],
+						['sdb.ap-southeast-2.amazonaws.com', 'Asia Pacific (Sydney)'],
 						['sdb.ap-northeast-1.amazonaws.com', 'Asia Pacific (Tokyo)'],
 						['sdb.sa-east-1.amazonaws.com', 'South America (Sao Paulo)']
 					],
