@@ -11,6 +11,7 @@ Ext.application({
 	id: 'SdbNavigator',
 	name: 'SdbNavigator',
 	controllers: ['DomainTree', 'SdbData', 'Settings'],
+	requires: ['Ext.state.CookieProvider', 'Ext.container.Viewport', 'Ext.layout.container.Border'],
 	launch: function() {
 		Ext.state.Manager.setProvider(Ext.create('Ext.state.CookieProvider'));
 		Ext.create('Ext.container.Viewport', {

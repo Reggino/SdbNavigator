@@ -3,6 +3,7 @@
 
 Ext.define('SdbNavigator.view.SdbDataPanel', {
     extend: 'Ext.panel.Panel',
+	requires: ['SdbNavigator.form.field.SdbValue', 'Ext.grid.plugin.RowEditing', 'Ext.grid.Panel'],
 	alias: 'widget.sdbdatapanel',
 
 	layout: 'border',

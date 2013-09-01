@@ -2,3 +2,7 @@
 .x-grid-row-editor-errors { display: none; }
 
 a { color: #777;}
+
+.null-value-trigger { background-image: url('/resources/img/nullValueIcon.png'); border-bottom: 0px; }
+.array-value-trigger { background-image: url('/resources/img/arrayValueIcon.png'); border-bottom: 0px;}
+.string-value-trigger { background-image: url('/resources/img/stringValueIcon.png'); border-bottom: 0px;}

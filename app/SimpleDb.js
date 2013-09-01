@@ -75,7 +75,14 @@ Ext.define('SdbNavigator.SimpleDb', {
 					attributeNode = attributeNode.nextSibling;
 					while (attributeNode !== null) {
 						attributeValueNode =  attributeNode.childNodes[1].firstChild;
-						result[attributeNode.childNodes[0].firstChild.nodeValue] = (Ext.isEmpty(attributeValueNode) ? '' : attributeValueNode.nodeValue);
+						if (result[attributeNode.childNodes[0].firstChild.nodeValue] === undefined) {
+							result[attributeNode.childNodes[0].firstChild.nodeValue] = (Ext.isEmpty(attributeValueNode) ? '' : attributeValueNode.nodeValue);
+						} else {
+							if (!Ext.isArray(result[attributeNode.childNodes[0].firstChild.nodeValue])) {
+								result[attributeNode.childNodes[0].firstChild.nodeValue] = [result[attributeNode.childNodes[0].firstChild.nodeValue]];
+							}
+							result[attributeNode.childNodes[0].firstChild.nodeValue].push((Ext.isEmpty(attributeValueNode) ? '' : attributeValueNode.nodeValue));
+						}
 						attributeNode = attributeNode.nextSibling;
 					}
 					resultData.push(result);

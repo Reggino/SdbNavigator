@@ -197,15 +197,14 @@ Ext.define('SdbNavigator.controller.SdbData', {
 			});
 
 			Ext.each(existingColumns, function (attribute, index) {
-				fields.push({name: attribute,  type: 'string'});
+				fields.push({ name: attribute, defaultValue: null });
 				columns.push({
 					text: attribute,
 					dataIndex: attribute,
 					id: uniqueId + '_' + index,
 					flex: 1,
 					editor:  {
-						xtype: 'textfield',
-						editable: false,
+						xtype: ((attribute === 'itemName()') ? 'textfield' : 'sdbvaluefield'),
 						allowBlank: (attribute !== 'itemName()')
 					}
 				});
@@ -270,24 +269,49 @@ Ext.define('SdbNavigator.controller.SdbData', {
 							},
 							edit: function (editor, context) {
 								var updateRecord = function (record) {
-									var propCount = 1, params = {
+									var propCount = 0, putParams, deleteParams;
+
+									putParams = {
 										DomainName:  domain,
 										Action: 'PutAttributes',
 										ItemName: record.get('itemName()')
 									};
+									deleteParams = {
+										DomainName: domain,
+										Action: 'DeleteAttributes',
+										ItemName: record.get('itemName()')
+									};
 									Ext.Object.each(record.data, function (propName, propValue) {
+										var recipientParamConfigObject = ((propValue === null) ? deleteParams : putParams);
 										if (propName !== 'itemName()') {
-											/* @todo implement scenario where multiple instances of one attribute may exist 'Replace' now is always true */
-											params['Attribute.' + propCount + '.Name'] = propName;
-											params['Attribute.' + propCount + '.Value'] = propValue;
-											params['Attribute.' + propCount + '.Replace'] = true;
-											propCount += 1;
+											if (Ext.isArray(propValue)) {
+												Ext.Array.each(propValue, function (singleValue) {
+													propCount += 1;
+													recipientParamConfigObject['Attribute.' + propCount + '.Name'] = propName;
+													recipientParamConfigObject['Attribute.' + propCount + '.Value'] = singleValue;
+													recipientParamConfigObject['Attribute.' + propCount + '.Replace'] = true;
+												});
+											} else {
+												propCount += 1;
+												recipientParamConfigObject['Attribute.' + propCount + '.Name'] = propName;
+												if (Ext.isString(propValue)) {
+													recipientParamConfigObject['Attribute.' + propCount + '.Value'] = propValue;
+													recipientParamConfigObject['Attribute.' + propCount + '.Replace'] = true;
+												}
+											}
 										}
 									});
-									SdbNavigator.SimpleDb.doQuery('GET', params, function () {
-										record.commit();
-										record.raw = record.data;
-									});
+									if (Ext.Object.getSize(putParams) > 3) {
+										SdbNavigator.SimpleDb.doQuery('GET', putParams, function () {
+											record.commit();
+											record.raw = record.data;
+										});
+									}
+									if (Ext.Object.getSize(deleteParams) > 3) {
+										SdbNavigator.SimpleDb.doQuery('GET', deleteParams, function () {
+											//for now, fire and forget
+										});
+									}
 								};
 
 								if (context.record.phantom) {
