@@ -136,7 +136,7 @@ Ext.define('SdbNavigator.controller.DomainTree', {
 									attributeNames.push(node.firstChild.nodeValue);
 								});
 								if (domainCount > processedCount) {
-									Ext.each(attributeNames, function (attributeName) {
+									Ext.Array.each(Ext.Array.unique(attributeNames), function (attributeName) {
 										domainNode.appendChild({ text: attributeName, leaf: true });
 									});
 									//scanning is done! start filling the grid

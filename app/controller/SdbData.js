@@ -1,5 +1,5 @@
 /*jslint unparam: true, sloppy: true, maxerr: 50, indent: 4 */
-/*global Ext:false, SdbNavigator: false */
+/*global Ext:false, SdbNavigator: false, uuid: false */
 
 Ext.define('SdbNavigator.controller.SdbData', {
 	extend: 'Ext.app.Controller',
@@ -51,7 +51,7 @@ Ext.define('SdbNavigator.controller.SdbData', {
 			'#deleteRecordButton': {
 				'click': function () {
 					Ext.Msg.confirm('Are you sure?', 'Are you sure you want to delete the selection?', function (response) {
-						if (response == 'yes') {
+						if (response === 'yes') {
 							Ext.each(Ext.getCmp('sdbDataGrid').getSelectionModel().getSelection(), function (records) {
 								Ext.getCmp('sdbDataGrid').getStore().remove(records);
 							});
@@ -132,7 +132,7 @@ Ext.define('SdbNavigator.controller.SdbData', {
 													chunk.DomainName = domain;
 													chunk.Action = 'BatchPutAttributes';
 													SdbNavigator.SimpleDb.doQuery('GET', chunk, function () {
-														importedChunkCount++;
+														importedChunkCount += 1;
 														doImport();
 													});
 												} else {
@@ -244,6 +244,7 @@ Ext.define('SdbNavigator.controller.SdbData', {
 					sortOnLoad: false,
 					sorters: sorters,
 					sort: function (sortOptions) {
+						var newQuery;
 						if (Ext.isObject(sortOptions)) {
 							queryParts.where =  SdbNavigator.SimpleDb.quoteAttribute(sortOptions.property) + ' is not null';
 							queryParts.sort = SdbNavigator.SimpleDb.quoteAttribute(sortOptions.property) + ' ' + sortOptions.direction;
@@ -269,7 +270,7 @@ Ext.define('SdbNavigator.controller.SdbData', {
 							},
 							edit: function (editor, context) {
 								var updateRecord = function (record) {
-									var propCount = 0, putParams, deleteParams;
+									var putPropCount = 0, deletePropCount = 0, putParams, deleteParams;
 
 									putParams = {
 										DomainName:  domain,
@@ -283,23 +284,28 @@ Ext.define('SdbNavigator.controller.SdbData', {
 									};
 									Ext.Object.each(record.data, function (propName, propValue) {
 										var recipientParamConfigObject = ((propValue === null) ? deleteParams : putParams);
-										if (propName !== 'itemName()') {
-											if (Ext.isArray(propValue)) {
-												Ext.Array.each(propValue, function (singleValue) {
-													propCount += 1;
-													recipientParamConfigObject['Attribute.' + propCount + '.Name'] = propName;
-													recipientParamConfigObject['Attribute.' + propCount + '.Value'] = singleValue;
-													recipientParamConfigObject['Attribute.' + propCount + '.Replace'] = true;
-												});
-											} else {
-												propCount += 1;
-												recipientParamConfigObject['Attribute.' + propCount + '.Name'] = propName;
-												if (Ext.isString(propValue)) {
-													recipientParamConfigObject['Attribute.' + propCount + '.Value'] = propValue;
-													recipientParamConfigObject['Attribute.' + propCount + '.Replace'] = true;
-												}
-											}
+										if (propName === 'itemName()') {
+											return;
 										}
+
+										//has it been set to null?
+										if (propValue === null) {
+											if (context.originalValues[propName] !== null) {
+												Ext.Array.each(Ext.Array.from(context.originalValues[propName]), function (originalValue) {
+													deletePropCount += 1;
+													deleteParams['Attribute.' + deletePropCount + '.Name'] = propName;
+													deleteParams['Attribute.' + deletePropCount + '.Value'] = originalValue;
+												});
+											}
+											return;
+										}
+
+										Ext.Array.each(Ext.Array.from(propValue), function (singleValue) {
+											putPropCount += 1;
+											recipientParamConfigObject['Attribute.' + putPropCount + '.Name'] = propName;
+											recipientParamConfigObject['Attribute.' + putPropCount + '.Value'] = singleValue;
+											recipientParamConfigObject['Attribute.' + putPropCount + '.Replace'] = true;
+										});
 									});
 									if (Ext.Object.getSize(putParams) > 3) {
 										SdbNavigator.SimpleDb.doQuery('GET', putParams, function () {
@@ -309,13 +315,14 @@ Ext.define('SdbNavigator.controller.SdbData', {
 									}
 									if (Ext.Object.getSize(deleteParams) > 3) {
 										SdbNavigator.SimpleDb.doQuery('GET', deleteParams, function () {
-											//for now, fire and forget
+											record.commit();
 										});
 									}
 								};
 
 								if (context.record.phantom) {
 									SdbNavigator.SimpleDb.select('select COUNT(*) from ' +  SdbNavigator.SimpleDb.quoteAttribute(domain) + ' where itemName() = ' + SdbNavigator.SimpleDb.quoteValue(context.record.get('itemName()')), function (data) {
+										var grid;
 										if (parseInt(data[0].Count, 10) === 0) {
 											updateRecord(context.record);
 										} else {
