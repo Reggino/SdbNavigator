@@ -1,5 +1,5 @@
 /*jslint unparam: true, sloppy: true */
-/*global Ext:false, SdbNavigator: false, AWSV2Signer: false */
+/*global Ext:false, AWSV2Signer: false */
 
 Ext.define('SdbNavigator.SimpleDb', {
 	singleton: true,
@@ -128,7 +128,15 @@ Ext.define('SdbNavigator.SimpleDb', {
 				}
 			},
 			failure: function (response) {
-				Ext.Msg.alert('Error', Ext.DomQuery.selectValue('Message', response.responseXML));
+				Ext.Msg.alert('Error', ((response.responseXML === null)
+				? '<' + 'b>Did not receive response to AJAX request.</b><p>' +
+					'</p><p>Please check the following:</p> <ul>' +
+					'<li>- Is there an active internet connection?</li>' +
+					'<li>- Is the any software running that may block cross-domain requests?</li>' +
+					'<li>- In development mode, make sure the browser is able to make cross-domain requests: start ' +
+					'chrome with --disable-web-security .</li>' +
+				'</ul>'
+				: Ext.DomQuery.selectValue('Message', response.responseXML)));
 			},
 			disableCaching: false
 		});
