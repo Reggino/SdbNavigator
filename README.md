@@ -51,6 +51,7 @@ Build your own version of the plugin
 --------
 
 1. Download and install node.js
-2. Install using npm 'wrench' and 'node-native-zip'
-3. Build the plugin version of your source, using `node build.js`
+2. Run "npm install"
+3. Run "grunt" to test your app locally 
+4. Run "grunt build" to build the plugin version of your source.
 4. See http://code.google.com/chrome/extensions/getstarted.html#load for how to install it in Chrome
