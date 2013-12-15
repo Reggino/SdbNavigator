@@ -338,7 +338,8 @@ Ext.define('SdbNavigator.controller.SdbData', {
 								}
 							}
 						}
-					})
+					}),
+					'bufferedrenderer'
 				]
 			});
 		});

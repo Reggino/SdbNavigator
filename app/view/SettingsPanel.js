@@ -22,7 +22,7 @@ Ext.define('SdbNavigator.view.SettingsPanel', {
 
 			'->', {
 				xtype: 'tbtext',
-				text: '<h2>Box usage:</h2>'
+				text: '<b>Box usage:</b>'
 			}, {
 				xtype: 'tbtext',
 				text: '0.0000000000',
@@ -30,7 +30,7 @@ Ext.define('SdbNavigator.view.SettingsPanel', {
 				width: 66
 			}, '-', {
 				xtype: 'tbtext',
-				text: '<h2>Total:</h2>'
+				text: '<b>Total:</b>'
 			}, {
 				xtype: 'tbtext',
 				text: '0.0000000000',

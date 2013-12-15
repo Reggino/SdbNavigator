@@ -102,8 +102,11 @@ Ext.define('SdbNavigator.controller.DomainTree', {
 	attributeScan: function (domainNode) {
 		// get the columns of a domain as suggested
 		// http://stackoverflow.com/questions/2772644/amazon-simpledb-is-there-a-way-to-list-all-attributes-in-a-domain
-		var self = this, attributeNames = [], domain = domainNode.data.text;
-		Ext.getCmp('centerPanel').setDisabled(false);
+		var self = this, attributeNames = [], domain = domainNode.data.text, centerPanel;
+		centerPanel = Ext.getCmp('centerPanel');
+		if (centerPanel) {
+			centerPanel.setDisabled(false);
+		}
 		SdbNavigator.SimpleDb.select('select COUNT(*) from ' + SdbNavigator.SimpleDb.quoteAttribute(domain), function (response) {
 			var domainCount = parseInt(response[0].Count, 10), avgSkipCount = domainCount / 2500, processedCount = 0, nextToken = null, scan = function () {
 				var countRequestParams = {

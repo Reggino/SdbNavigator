@@ -61,8 +61,17 @@ Ext.define('SdbNavigator.SimpleDb', {
 	},
 
 	select: function (query, callback) {
-		var self = this, resultData = [], queryParts = this.getQueryParts(query), queryLimit = -1, params = { Action: 'Select', SelectExpression: query }, doSelect;
+		var self, resultData, queryParts, queryLimit, params, sdbDataGridPanelContainer, doSelect;
+		self = this;
+		resultData = [];
+		queryParts = this.getQueryParts(query);
+		queryLimit = -1;
+		params = { Action: 'Select', SelectExpression: query };
 
+		sdbDataGridPanelContainer = Ext.getCmp('sdbDataGridPanelContainer');
+		if (!sdbDataGridPanelContainer) {
+			return;
+		}
 		if (Ext.isDefined(queryParts.limit)) {
 			queryLimit = parseInt(queryParts.limit, 10);
 		}
@@ -91,12 +100,12 @@ Ext.define('SdbNavigator.SimpleDb', {
 				if (!Ext.isEmpty(params.NextToken) && ((queryLimit < 0) || (queryLimit > resultData.length))) {
 					doSelect();
 				} else {
-					Ext.getCmp('sdbDataGridPanelContainer').setLoading(false);
+					sdbDataGridPanelContainer.setLoading(false);
 					callback(resultData);
 				}
 			});
 		};
-		Ext.getCmp('sdbDataGridPanelContainer').setLoading(true);
+		sdbDataGridPanelContainer.setLoading(true);
 		doSelect();
 	},
 
