@@ -4,12 +4,14 @@
   "description": "SdbNavigator is a free and open source Amazon SimpleDB Administration Interface. More info on http://www.kingsquare.nl/sdbnavigator",
   "main": "app.js",
   "dependencies": {
-    "wrench": "~1.3.9",
-    "grunt-contrib-connect": "~0.5.0",
-    "grunt": "~0.4.2",
-    "grunt-prompt": "~0.1.2"
+    "wrench": "~1.3.9"
   },
-  "devDependencies": {},
+  "devDependencies": {
+      "grunt-contrib-connect": "0.5.0",
+      "grunt": "0.4.2",
+      "grunt-prompt": "0.1.2",
+      "grunt-cli": "*"
+  },
   "scripts": {
     "test": "grunt"
   },

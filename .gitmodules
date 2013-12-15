@@ -1,6 +1,6 @@
 [submodule "extjs"]
 	path = extjs
-	url = git://github.com/probonogeek/extjs.git
+	url = git://github.com/return1/extjs
 [submodule "resources/node-uuid"]
 	path = resources/node-uuid
 	url = git://github.com/broofa/node-uuid.git
