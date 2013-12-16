@@ -161,8 +161,8 @@ Ext.define('SdbNavigator.controller.DomainTree', {
 	},
 
 	initDomain: function (domainNode) {
-		Ext.getCmp('queryTextarea').setValue('select * from ' + SdbNavigator.SimpleDb.quoteAttribute(domainNode.data.text) + ' limit ' + Ext.getCmp('defaultQueryLimit').getValue());
-		this.getController('SdbData').runQuery(Ext.getCmp('queryTextarea').getValue());
+		Ext.getCmp('queryTextArea').setValue('select * from ' + SdbNavigator.SimpleDb.quoteAttribute(domainNode.data.text) + ' limit ' + Ext.getCmp('defaultQueryLimit').getValue());
+		this.getController('SdbData').runQuery(Ext.getCmp('queryTextArea').getValue());
 		Ext.getCmp('centerPanel').setDisabled(false);
 		Ext.getCmp('deleteRecordButton').setDisabled(true);
 	},
@@ -238,7 +238,7 @@ Ext.define('SdbNavigator.controller.DomainTree', {
 								'Attribute.1.Name': propertyName
 							}, function () {
 								//rerun the last query to reset the grid
-								self.getController('SdbData').runQuery(Ext.getCmp('queryTextarea').getValue());
+								self.getController('SdbData').runQuery(Ext.getCmp('queryTextArea').getValue());
 							});
 						});
 					});

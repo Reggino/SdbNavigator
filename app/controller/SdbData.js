@@ -66,7 +66,14 @@ Ext.define('SdbNavigator.controller.SdbData', {
 			},
 			'#runQueryButton': {
 				'click': function () {
-					self.runQuery(Ext.getCmp('queryTextarea').getValue());
+					self.runQuery(Ext.getCmp('queryTextArea').getValue());
+				}
+			},
+			'#queryTextArea': {
+				keydown: function (textarea, event) {
+					if ((event.getKey() === Ext.EventObject.ENTER) && event.shiftKey) {
+						self.runQuery(Ext.getCmp('queryTextArea').getValue());
+					}
 				}
 			},
 			'#importJsonButton': {
@@ -137,7 +144,7 @@ Ext.define('SdbNavigator.controller.SdbData', {
 													});
 												} else {
 													window.close();
-													self.runQuery(Ext.getCmp('queryTextarea').getValue());
+													self.runQuery(Ext.getCmp('queryTextArea').getValue());
 												}
 											};
 											doImport();
@@ -159,7 +166,7 @@ Ext.define('SdbNavigator.controller.SdbData', {
 			'#exportJsonButton': {
 				'click': function () {
 					var domain = Ext.getCmp('domainTreePanel').getRootNode().findChild('expanded', true).data.text;
-					SdbNavigator.SimpleDb.select(Ext.getCmp('queryTextarea').getValue(), function (resultData) {
+					SdbNavigator.SimpleDb.select(Ext.getCmp('queryTextArea').getValue(), function (resultData) {
 						saveAs(
 							new Blob(
 								[Ext.JSON.encode(resultData)], {type: "application/json" }
@@ -172,7 +179,7 @@ Ext.define('SdbNavigator.controller.SdbData', {
 			'#exportCsvButton': {
 				'click': function () {
 					var domain = Ext.getCmp('domainTreePanel').getRootNode().findChild('expanded', true).data.text;
-					SdbNavigator.SimpleDb.select(Ext.getCmp('queryTextarea').getValue(), function (resultData) {
+					SdbNavigator.SimpleDb.select(Ext.getCmp('queryTextArea').getValue(), function (resultData) {
 						//BOM
 						var result = ['\ufeff'];
 						Ext.Array.forEach(resultData, function (rowData) {
@@ -278,7 +285,7 @@ Ext.define('SdbNavigator.controller.SdbData', {
 							queryParts.where =  SdbNavigator.SimpleDb.quoteAttribute(sortOptions.property) + ' is not null';
 							queryParts.sort = SdbNavigator.SimpleDb.quoteAttribute(sortOptions.property) + ' ' + sortOptions.direction;
 							newQuery = SdbNavigator.SimpleDb.mergeQueryParts(queryParts);
-							Ext.getCmp('queryTextarea').setValue(newQuery);
+							Ext.getCmp('queryTextArea').setValue(newQuery);
 							self.runQuery(newQuery);
 						}
 					}
