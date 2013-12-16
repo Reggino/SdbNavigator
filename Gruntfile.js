@@ -42,7 +42,7 @@ module.exports = function(grunt) {
 		wrench.mkdirSyncRecursive('./build/extjs/resources/themes/images');
 		wrench.mkdirSyncRecursive('./build/extjs/resources/css');
 		wrench.copyDirSyncRecursive('./app', './build/app');
-		wrench.copyDirSyncRecursive('./extjs/resources/themes/images/default', './build/extjs/resources/themes/images/default');
+		wrench.copyDirSyncRecursive('./extjs/resources/ext-theme-classic', './build/extjs/resources/ext-theme-classic');
 		wrench.copyDirSyncRecursive('./resources', './build/resources');
 
 		//copy the final files
