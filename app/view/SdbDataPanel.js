@@ -3,7 +3,7 @@
 
 Ext.define('SdbNavigator.view.SdbDataPanel', {
     extend: 'Ext.panel.Panel',
-	requires: ['SdbNavigator.form.field.SdbValue', 'Ext.grid.plugin.RowEditing', 'Ext.grid.Panel'],
+	requires: ['SdbNavigator.form.field.SdbValue', 'Ext.grid.plugin.RowEditing', 'Ext.grid.Panel', 'Ext.menu.Menu'],
 	alias: 'widget.sdbdatapanel',
 
 	layout: 'border',
@@ -52,10 +52,17 @@ Ext.define('SdbNavigator.view.SdbDataPanel', {
 					icon: 'resources/img/icons/database_gear.png'
 				},
 				{
-					xtype: 'button',
-					id: 'exportJsonButton',
-					text: 'Export JSON',
-					icon: 'resources/img/icons/database_save.png'
+					xtype: 'splitbutton',
+					itemId: 'exportButton',
+					text: 'Export',
+					icon: 'resources/img/icons/database_save.png',
+					menu: Ext.create('Ext.menu.Menu', {
+						items: [
+							// these will render as dropdown menu items when the arrow is clicked:
+							{ text: 'JSON', id: 'exportJsonButton' },
+							{ text: 'CSV', id: 'exportCsvButton' }
+						]
+					})
 				}
 			]
 		}

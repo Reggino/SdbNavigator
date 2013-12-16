@@ -1,3 +1,6 @@
+/*jshint strict: false */
+/*global Ext: false */
+
 Ext.Loader.setConfig({
 	enabled: true,
 	paths: {
@@ -11,7 +14,8 @@ Ext.application({
 	id: 'SdbNavigator',
 	name: 'SdbNavigator',
 	controllers: ['DomainTree', 'SdbData', 'Settings'],
-	requires: ['Ext.state.CookieProvider', 'Ext.container.Viewport', 'Ext.layout.container.Border'],
+	requires: ['Ext.state.CookieProvider', 'Ext.container.Viewport', 'Ext.layout.container.Border', 'Ext.menu.Menu',
+			'Ext.button.Split'],
 	launch: function() {
 		Ext.state.Manager.setProvider(Ext.create('Ext.state.CookieProvider'));
 		Ext.create('Ext.container.Viewport', {

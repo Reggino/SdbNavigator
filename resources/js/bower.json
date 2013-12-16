@@ -1,0 +1,20 @@
+{
+  "name": "SdbNavigator",
+  "version": "2.0.2",
+  "homepage": "https://github.com/Reggino/SdbNavigator",
+  "authors": [
+    "Tim de Koning <github@king-management.nl>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "FileSaver": "*",
+    "stringjs": "~1.7.0"
+  }
+}

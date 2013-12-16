@@ -1,5 +1,5 @@
 /*jslint unparam: true, sloppy: true, maxerr: 50, indent: 4 */
-/*global Ext:false, SdbNavigator: false, uuid: false */
+/*global Ext:false, SdbNavigator: false, uuid: false, saveAs: false, S:false */
 
 Ext.define('SdbNavigator.controller.SdbData', {
 	extend: 'Ext.app.Controller',
@@ -149,10 +149,39 @@ Ext.define('SdbNavigator.controller.SdbData', {
 					});
 				}
 			},
+
+			'#exportButton': {
+				click: function (button) {
+					button.showMenu();
+				}
+			},
+
 			'#exportJsonButton': {
 				'click': function () {
+					var domain = Ext.getCmp('domainTreePanel').getRootNode().findChild('expanded', true).data.text;
 					SdbNavigator.SimpleDb.select(Ext.getCmp('queryTextarea').getValue(), function (resultData) {
-						window.open('data:application/json,' + encodeURIComponent(Ext.JSON.encode(resultData)));
+						saveAs(
+							new Blob(
+								[Ext.JSON.encode(resultData)], {type: "application/json" }
+							), domain + '.json'
+						);
+					});
+				}
+			},
+
+			'#exportCsvButton': {
+				'click': function () {
+					var domain = Ext.getCmp('domainTreePanel').getRootNode().findChild('expanded', true).data.text;
+					SdbNavigator.SimpleDb.select(Ext.getCmp('queryTextarea').getValue(), function (resultData) {
+						//BOM
+						var result = ['\ufeff'];
+						Ext.Array.forEach(resultData, function (rowData) {
+							result.push(S(rowData).toCSV({delimiter: ';'}).s + "\r\n");
+						});
+						saveAs(
+							new Blob(result, {type: "text/csv" }
+							), domain + '.csv'
+						);
 					});
 				}
 			}
