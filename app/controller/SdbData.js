@@ -318,12 +318,13 @@ Ext.define('SdbNavigator.controller.SdbData', {
 										Action: 'DeleteAttributes',
 										ItemName: record.get('itemName()')
 									};
-									Ext.Object.each(record.data, function (propName, propValue) {
-										var recipientParamConfigObject = ((propValue === null) ? deleteParams : putParams);
+									Ext.Array.forEach(fields, function (field) {
+										var propName = field.name;
 										if (propName === 'itemName()') {
 											return;
 										}
-
+										var propValue = record.get(propName);
+										var recipientParamConfigObject = ((propValue === null) ? deleteParams : putParams);
 										//has it been set to null?
 										if (propValue === null) {
 											if (context.originalValues[propName] !== null) {
