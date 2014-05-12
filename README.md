@@ -38,14 +38,24 @@ important data before using this software.
 Contributing
 ------------
 
-1. Fork it.
-2. Create a branch (`git checkout -b my_sdbNavigator`)
-3. Commit your changes (`git commit -am "Added Shizzle"`)
-4. Push to the branch  (`git push origin my_sdbNavigator`)
-5. Create an [Issue][1] with a link to your branch
-6. Enjoy a beer and wait
+Get a working local development version of the app
+1. Fork it on Github.
+2. Clone to your development environment
+3. Install submodule (```git submodule update```)
+4. Run ```npm install -g grunt-cli```
+5. Run ```npm install```
+6. Run ```grunt```
+7. Start your chrome with ```--disable-web-security``` and open http://localhost
 
-[1]: https://github.com/Kingsquare/SdbNavigator/issues
+When something nice is created:
+
+7. Create a branch (`git checkout -b my_sdbNavigator`)
+8. Commit your changes (`git commit -am "Added Shizzle"`)
+9. Push to the branch  (`git push origin my_sdbNavigator`)
+10. Create an [Issue][1] with a link to your branch
+11. Enjoy a beer and wait
+
+[1]: https://github.com/Reggino/SdbNavigator/issues
 
 Build your own version of the plugin
 --------
