@@ -49,11 +49,11 @@ Get a working local development version of the app
 
 When something nice is created:
 
-7. Create a branch (`git checkout -b my_sdbNavigator`)
-8. Commit your changes (`git commit -am "Added Shizzle"`)
-9. Push to the branch  (`git push origin my_sdbNavigator`)
-10. Create an [Issue][1] with a link to your branch
-11. Enjoy a beer and wait
+1. Create a branch (`git checkout -b my_sdbNavigator`)
+2. Commit your changes (`git commit -am "Added Shizzle"`)
+3. Push to the branch  (`git push origin my_sdbNavigator`)
+4. Create an [Issue][1] with a link to your branch
+5. Enjoy a beer and wait
 
 [1]: https://github.com/Reggino/SdbNavigator/issues
 
@@ -64,4 +64,4 @@ Build your own version of the plugin
 2. Run "npm install"
 3. Run "grunt" to test your app locally 
 4. Run "grunt build" to build the plugin version of your source.
-4. See http://code.google.com/chrome/extensions/getstarted.html#load for how to install it in Chrome
+5. See http://code.google.com/chrome/extensions/getstarted.html#load for how to install it in Chrome
