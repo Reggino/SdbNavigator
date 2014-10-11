@@ -39,12 +39,13 @@ Contributing
 ------------
 
 Get a working local development version of the app
+
 1. Fork it on Github.
 2. Clone to your development environment
-3. Install submodule (```git submodule update```)
+3. Install submodule (```git submodule init && git submodule update```)
 4. Run ```npm install -g grunt-cli```
 5. Run ```npm install```
-6. Run ```grunt```
+6. Run ```grunt``` (or ```sudo grunt```)
 7. Start your chrome with ```--disable-web-security``` and open http://localhost
 
 When something nice is created:
