@@ -255,7 +255,7 @@ Ext.define('SdbNavigator.controller.SdbData', {
 				sorters.push({
 					direction: sortDirection,
 					property: SdbNavigator.SimpleDb.unquoteAttribute(sortData.join(' ')),
-					sorterFn: Ext.emptyFn
+					sorterFn: function () { return 0; }
 				});
 			}
 
