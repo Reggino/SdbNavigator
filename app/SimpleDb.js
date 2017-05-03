@@ -111,9 +111,11 @@ Ext.define('SdbNavigator.SimpleDb', {
 
 	doQuery: function (method, params, callback) {
 		var host, signer, self = this;
+		var _this = this;
+
 		host = Ext.getCmp('region').getValue();
 		signer = new AWSV2Signer(Ext.getCmp('awsAccessKey').getValue(), Ext.getCmp('awsSecretKey').getValue());
-		var signedParams = signer.sign(
+		signer.asyncSign(
 			Ext.merge(
 				params,
 				{
@@ -123,9 +125,11 @@ Ext.define('SdbNavigator.SimpleDb', {
 				"verb": method,
 				"host": host,
 				"uriPath": "/"
-			}
+			},
+            function(signedParams) {
+                _this.doQuery2(method, params, callback, signedParams);
+            }
 		);
-		this.doQuery2(method, params, callback, signedParams);
 	},
 
 	doQuery2: function(method, params, callback, signedParams) {

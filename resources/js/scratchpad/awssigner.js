@@ -3,6 +3,11 @@ function AWSSigner(accessKeyId, secretKey) {
     this.secretKey = secretKey;
 }
 
+AWSSigner.prototype.asyncSign = function(params, time, requestInfo, cb) {
+    signedParams = this.sign(params, time, requestInfo);
+    cb(signedParams);
+};
+
 AWSSigner.prototype.sign = function (params, time, requestInfo) {
     var timeUtc = time.toISO8601();
     params = this.addFields(params, timeUtc);
