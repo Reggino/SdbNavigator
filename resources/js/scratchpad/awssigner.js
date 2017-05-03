@@ -188,11 +188,11 @@ function simpleComparator(a, b) {
 }
 
 Date.prototype.toISO8601 = function () {
-    return this.getUTCFullYear() + "-" 
-    + pad(this.getUTCMonth() + 1) + "-" 
-    + pad(this.getUTCDate()) + "T" 
-    + pad(this.getUTCHours()) + ":" 
-    + pad(this.getUTCMinutes()) + ":" 
+    return this.getUTCFullYear() + "-"
+    + pad(this.getUTCMonth() + 1) + "-"
+    + pad(this.getUTCDate()) + "T"
+    + pad(this.getUTCHours()) + ":"
+    + pad(this.getUTCMinutes()) + ":"
     + pad(this.getUTCSeconds()) + ".000Z";
 }
 
