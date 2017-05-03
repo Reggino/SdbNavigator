@@ -104,6 +104,30 @@ Ext.define('SdbNavigator.view.SettingsPanel', {
 			items: [
 				{
 					xtype: 'label',
+					text: 'STS ARN (Optional)',
+					forId: 'awsStsArn'
+				},
+				{
+					id: 'awsStsArn',
+					xtype: 'textfield',
+					anchor: '100%',
+					allowBlank: true,
+					stateful: true,
+					stateId: 'awsStsArn',
+					stateEvents: ['change'],
+					applyState: function (state) {
+						this.setValue(state.value);
+					},
+					getState: function () {
+						return { value: this.getValue() };
+					}
+				}
+			]
+		},
+		{
+			items: [
+				{
+					xtype: 'label',
 					text: 'Region'
 				},
 				{

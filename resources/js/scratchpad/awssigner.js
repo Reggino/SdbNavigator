@@ -1,6 +1,7 @@
-function AWSSigner(accessKeyId, secretKey) {
+function AWSSigner(accessKeyId, secretKey, stsARN) {
     this.accessKeyId = accessKeyId;
     this.secretKey = secretKey;
+    this.stsARN = stsARN;
 }
 
 AWSSigner.prototype.asyncSign = function(params, time, requestInfo, cb) {
@@ -29,8 +30,8 @@ AWSSigner.prototype.generateSignature = function (str) {
 
 AWSV2Signer.prototype = new AWSSigner();
 
-function AWSV2Signer(accessKeyId, secretKey) {
-    AWSSigner.call(this, accessKeyId, secretKey);
+function AWSV2Signer(accessKeyId, secretKey, stsArn) {
+    AWSSigner.call(this, accessKeyId, secretKey, stsArn);
     this.version = 2;
 }
 

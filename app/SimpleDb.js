@@ -114,7 +114,11 @@ Ext.define('SdbNavigator.SimpleDb', {
 		var _this = this;
 
 		host = Ext.getCmp('region').getValue();
-		signer = new AWSV2Signer(Ext.getCmp('awsAccessKey').getValue(), Ext.getCmp('awsSecretKey').getValue());
+		signer = new AWSV2Signer(
+			Ext.getCmp('awsAccessKey').getValue(),
+			Ext.getCmp('awsSecretKey').getValue(),
+			Ext.getCmp('awsStsArn').getValue()
+		);
 		signer.asyncSign(
 			Ext.merge(
 				params,
