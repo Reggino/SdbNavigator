@@ -4,6 +4,11 @@
 Ext.define('SdbNavigator.SimpleDb', {
 	singleton: true,
 	boxUsage: 0.0,
+	signer: null,
+
+	resetConnection: function () {
+		this.signer = null;
+	},
 
 	getQueryParts: function (query) {
 		// select output_list from domain_name [where expression] [sort_instructions] [limit limit]
@@ -114,12 +119,16 @@ Ext.define('SdbNavigator.SimpleDb', {
 		var _this = this;
 
 		host = Ext.getCmp('region').getValue();
-		signer = new AWSV2Signer(
-			Ext.getCmp('awsAccessKey').getValue(),
-			Ext.getCmp('awsSecretKey').getValue(),
-			Ext.getCmp('awsStsArn').getValue()
-		);
-		signer.asyncSign(
+
+		if (this.signer == null) {
+			this.signer = new AWSV2Signer(
+				Ext.getCmp('awsAccessKey').getValue(),
+				Ext.getCmp('awsSecretKey').getValue(),
+				Ext.getCmp('awsStsArn').getValue()
+			);
+		}
+
+		this.signer.asyncSign(
 			Ext.merge(
 				params,
 				{
