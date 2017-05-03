@@ -113,10 +113,8 @@ Ext.define('SdbNavigator.SimpleDb', {
 		var host, signer, self = this;
 		host = Ext.getCmp('region').getValue();
 		signer = new AWSV2Signer(Ext.getCmp('awsAccessKey').getValue(), Ext.getCmp('awsSecretKey').getValue());
-
-		Ext.Ajax.request({
-			url: 'https://' + host,
-			params: signer.sign(Ext.merge(
+		var signedParams = signer.sign(
+			Ext.merge(
 				params,
 				{
 					Version: '2009-04-15'
@@ -125,7 +123,17 @@ Ext.define('SdbNavigator.SimpleDb', {
 				"verb": method,
 				"host": host,
 				"uriPath": "/"
-			}),
+			}
+		);
+		this.doQuery2(method, params, callback, signedParams);
+	},
+
+	doQuery2: function(method, params, callback, signedParams) {
+		var self = this;
+		var host = Ext.getCmp('region').getValue();
+		Ext.Ajax.request({
+			url: 'https://' + host,
+			params: signedParams,
 			method: method,
 			success: function (response) {
 				var lastBoxUsage = parseFloat(Ext.DomQuery.selectValue('BoxUsage', response.responseXML));
