@@ -52,6 +52,7 @@ Ext.define('SdbNavigator.view.SettingsPanel', {
 	},
 	items: [
 		{
+			flex: 0.7,
 			items: [
 				{
 					xtype: 'label',
@@ -76,6 +77,7 @@ Ext.define('SdbNavigator.view.SettingsPanel', {
 			]
 		},
 		{
+			flex: 0.7,
 			items: [
 				{
 					xtype: 'label',
@@ -101,6 +103,7 @@ Ext.define('SdbNavigator.view.SettingsPanel', {
 			]
 		},
 		{
+			flex: 1.5,
 			items: [
 				{
 					xtype: 'label',
@@ -125,6 +128,7 @@ Ext.define('SdbNavigator.view.SettingsPanel', {
 			]
 		},
 		{
+			flex: 0.6,
 			items: [
 				{
 					xtype: 'label',
@@ -160,6 +164,7 @@ Ext.define('SdbNavigator.view.SettingsPanel', {
 			]
 		},
 		{
+			flex: 0.5,
 			items: [
 				{
 					xtype: 'label',
@@ -176,6 +181,7 @@ Ext.define('SdbNavigator.view.SettingsPanel', {
 			]
 		},
 		{
+			flex: 0.35,
 			bodyPadding: '19 4',
 			items: [
 				{
