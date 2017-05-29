@@ -1,7 +1,81 @@
-function AWSSigner(accessKeyId, secretKey) {
-    this.accessKeyId = accessKeyId;
-    this.secretKey = secretKey;
+/*global Ext:false */
+
+function AWSSigner(accessKeyId, secretKey, stsARN) {
+    if (typeof stsARN !== "string" || stsARN.length === 0) {
+        this.accessKeyId = accessKeyId;
+        this.secretKey = secretKey;
+        this.sessionToken = null;
+        this.stsARN = null;
+    } else {
+        this.accessKeyId = null;
+        this.secretKey = null;
+        this.sessionToken = null;
+        this.stsARN = stsARN;
+
+        this.stsClientAccessKeyId = accessKeyId;
+        this.stsClientSecretKey = secretKey;
+    }
 }
+
+AWSSigner.prototype.asyncSign = function(params, time, requestInfo, cb) {
+    if (this.accessKeyId !== null) {
+        signedParams = this.sign(params, time, requestInfo);
+        cb(signedParams);
+        return;
+    }
+    console.log("Calling STS");
+
+    var stsCallParams = {
+        'Version': '2011-06-15',
+        'Action': 'AssumeRole',
+        'RoleSessionName': 'GoogleChromeSdbNavigator',
+        'RoleArn': this.stsARN
+    };
+
+    var stsRequestInfo = {
+        "verb": "GET",
+        "host": "sts.amazonaws.com",
+        "uriPath": "/"
+    };
+
+    var stsSigner = new AWSV2Signer(this.stsClientAccessKeyId, this.stsClientSecretKey);
+    var signedParams = stsSigner.sign(
+        stsCallParams,
+        new Date(),
+        stsRequestInfo
+    );
+
+    var _this = this;
+
+    Ext.Ajax.request({
+        method: stsRequestInfo.verb,
+        url: "https://" + stsRequestInfo.host + stsRequestInfo.uriPath,
+        params: signedParams,
+        success: function (response) {
+            _this.accessKeyId = Ext.DomQuery.selectValue("Credentials/AccessKeyId", response.responseXML);
+            _this.secretKey = Ext.DomQuery.selectValue("Credentials/SecretAccessKey", response.responseXML);
+            _this.sessionToken = Ext.DomQuery.selectValue("Credentials/SessionToken", response.responseXML);
+
+            cb(_this.sign(params, time, requestInfo));
+        },
+        failure: function (response) {
+            Ext.Msg.alert(
+                'Error',
+                ((response.responseXML === null)
+                    ? '<' + 'b>Did not receive response to AJAX request.</b><p>' +
+                      '</p><p>Please check the following:</p> <ul>' +
+                      '<li>- Is there an active internet connection?</li>' +
+                      '<li>- Is the any software running that may block cross-domain requests?</li>' +
+                      '<li>- In development mode, make sure the browser is able to make cross-domain requests: start ' +
+                      'chrome with --disable-web-security .</li>' +
+                      '</ul>'
+                    : Ext.DomQuery.selectValue('Message', response.responseXML)
+                )
+            );
+        },
+        disableCaching: false
+    });
+};
 
 AWSSigner.prototype.sign = function (params, time, requestInfo) {
     var timeUtc = time.toISO8601();
@@ -15,6 +89,10 @@ AWSSigner.prototype.addFields = function (params, time) {
     params.SignatureVersion = this.version;
     params.SignatureMethod = "HmacSHA1";
     params.Timestamp = time;
+
+    if (this.sessionToken !== null) {
+        params.SecurityToken = this.sessionToken;
+    }
     return params;
 }
 
@@ -24,8 +102,8 @@ AWSSigner.prototype.generateSignature = function (str) {
 
 AWSV2Signer.prototype = new AWSSigner();
 
-function AWSV2Signer(accessKeyId, secretKey) {
-    AWSSigner.call(this, accessKeyId, secretKey);
+function AWSV2Signer(accessKeyId, secretKey, stsArn) {
+    AWSSigner.call(this, accessKeyId, secretKey, stsArn);
     this.version = 2;
 }
 
@@ -110,11 +188,11 @@ function simpleComparator(a, b) {
 }
 
 Date.prototype.toISO8601 = function () {
-    return this.getUTCFullYear() + "-" 
-    + pad(this.getUTCMonth() + 1) + "-" 
-    + pad(this.getUTCDate()) + "T" 
-    + pad(this.getUTCHours()) + ":" 
-    + pad(this.getUTCMinutes()) + ":" 
+    return this.getUTCFullYear() + "-"
+    + pad(this.getUTCMonth() + 1) + "-"
+    + pad(this.getUTCDate()) + "T"
+    + pad(this.getUTCHours()) + ":"
+    + pad(this.getUTCMinutes()) + ":"
     + pad(this.getUTCSeconds()) + ".000Z";
 }
 

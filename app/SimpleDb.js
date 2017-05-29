@@ -4,6 +4,11 @@
 Ext.define('SdbNavigator.SimpleDb', {
 	singleton: true,
 	boxUsage: 0.0,
+	signer: null,
+
+	resetConnection: function () {
+		this.signer = null;
+	},
 
 	getQueryParts: function (query) {
 		// select output_list from domain_name [where expression] [sort_instructions] [limit limit]
@@ -111,12 +116,20 @@ Ext.define('SdbNavigator.SimpleDb', {
 
 	doQuery: function (method, params, callback) {
 		var host, signer, self = this;
-		host = Ext.getCmp('region').getValue();
-		signer = new AWSV2Signer(Ext.getCmp('awsAccessKey').getValue(), Ext.getCmp('awsSecretKey').getValue());
+		var _this = this;
 
-		Ext.Ajax.request({
-			url: 'https://' + host,
-			params: signer.sign(Ext.merge(
+		host = Ext.getCmp('region').getValue();
+
+		if (this.signer == null) {
+			this.signer = new AWSV2Signer(
+				Ext.getCmp('awsAccessKey').getValue(),
+				Ext.getCmp('awsSecretKey').getValue(),
+				Ext.getCmp('awsStsArn').getValue()
+			);
+		}
+
+		this.signer.asyncSign(
+			Ext.merge(
 				params,
 				{
 					Version: '2009-04-15'
@@ -125,7 +138,19 @@ Ext.define('SdbNavigator.SimpleDb', {
 				"verb": method,
 				"host": host,
 				"uriPath": "/"
-			}),
+			},
+            function(signedParams) {
+                _this.doQuery2(method, params, callback, signedParams);
+            }
+		);
+	},
+
+	doQuery2: function(method, params, callback, signedParams) {
+		var self = this;
+		var host = Ext.getCmp('region').getValue();
+		Ext.Ajax.request({
+			url: 'https://' + host,
+			params: signedParams,
 			method: method,
 			success: function (response) {
 				var lastBoxUsage = parseFloat(Ext.DomQuery.selectValue('BoxUsage', response.responseXML));

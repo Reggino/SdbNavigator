@@ -19,6 +19,7 @@ Ext.define('SdbNavigator.controller.Settings', {
 
 			'#settingsPanel #connectButton': {
 				click: function(button) {
+					SdbNavigator.SimpleDb.resetConnection();
 					this.listDomains(button.up('#settingsPanel'));
 				}
 			},

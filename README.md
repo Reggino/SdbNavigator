@@ -45,8 +45,9 @@ Get a working local development version of the app
 3. Install submodule (```git submodule init && git submodule update```)
 4. Run ```npm install -g grunt-cli```
 5. Run ```npm install```
-6. Run ```grunt``` (or ```sudo grunt```)
-7. Start your chrome with ```--disable-web-security``` and open http://localhost
+6. Run ```./node_modules/.bin/bower install```
+7. Run ```grunt``` (or ```sudo grunt```)
+8. Start your chrome with ```--disable-web-security``` and open http://localhost:3080/
 
 When something nice is created:
 
