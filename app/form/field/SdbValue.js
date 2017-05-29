@@ -39,6 +39,23 @@ Ext.define('SdbNavigator.form.field.SdbValue', {
 			}
 		};
 
+		onChange = function (radiogroup, newValue) {
+			var currentValue = me.getValue();
+
+			switch (newValue.dataType) {
+			case 'string':
+				me.setValue((Ext.isArray(currentValue) && (currentValue.length > 0))
+					? currentValue.shift() : '');
+				break;
+			case 'null':
+				me.setValue(null);
+				break;
+			case 'array':
+				me.setValue(Ext.isString(currentValue) ? [currentValue] : []);
+				break;
+			}
+		};
+
 		grid = Ext.create('Ext.grid.Panel', {
 			title: 'Array values',
 			store: {
@@ -112,22 +129,8 @@ Ext.define('SdbNavigator.form.field.SdbValue', {
 					{ boxLabel: 'Array', name: 'dataType', inputValue: 'array' }
 				],
 				listeners: {
-					change: function (radiogroup, newValue) {
-						var currentValue = me.getValue();
-
-						switch (newValue.dataType) {
-						case 'string':
-							me.setValue((Ext.isArray(currentValue) && (currentValue.length > 0))
-								? currentValue.shift() : '');
-							break;
-						case 'null':
-							me.setValue(null);
-							break;
-						case 'array':
-							me.setValue(Ext.isString(currentValue) ? [currentValue] : []);
-							break;
-						}
-					}
+					change: onChange,
+					paste: onChange,
 				}
 			}, grid]
 		});
