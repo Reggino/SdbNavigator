@@ -167,11 +167,11 @@ Ext.define('SdbNavigator.controller.SdbData', {
 				'click': function () {
 					var domain = Ext.getCmp('domainTreePanel').getRootNode().findChild('expanded', true).data.text;
 					SdbNavigator.SimpleDb.select(Ext.getCmp('queryTextArea').getValue(), function (resultData) {
-						saveAs(
-							new Blob(
-								[Ext.JSON.encode(resultData)], {type: "application/json" }
-							), domain + '.json'
-						);
+						const blob = new Blob([Ext.JSON.encode(resultData)], {type: "application/json" });
+						const url = URL.createObjectURL(blob);
+						chrome.downloads.download({
+							url: url
+						  });
 					});
 				}
 			},
@@ -185,10 +185,11 @@ Ext.define('SdbNavigator.controller.SdbData', {
 						Ext.Array.forEach(resultData, function (rowData) {
 							result.push(S(rowData).toCSV({delimiter: ';'}).s + "\r\n");
 						});
-						saveAs(
-							new Blob(result, {type: "text/csv" }
-							), domain + '.csv'
-						);
+						const blob = new Blob(result, {type: "text/csv" });
+						const url = URL.createObjectURL(blob);
+						chrome.downloads.download({
+							url: url
+						  });
 					});
 				}
 			}
