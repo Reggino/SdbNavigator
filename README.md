@@ -42,12 +42,13 @@ Get a working local development version of the app
 
 1. Fork it on Github.
 2. Clone to your development environment
-3. Install submodule (```git submodule init && git submodule update```)
-4. Run ```npm install -g grunt-cli```
-5. Run ```npm install```
-6. Run ```./node_modules/.bin/bower install```
-7. Run ```grunt``` (or ```sudo grunt```)
-8. Start your chrome with ```--disable-web-security``` and open http://localhost:3080/
+3. (optional) Run ```npm install -g grunt-cli```
+4. Run ```npm install```
+   Post install scripts should run automatically:
+    * ```./node_modules/.bin/bower install```
+    * ```git submodule init && git submodule update```
+5. Run ```npm start``` (or ```sudo grunt```)
+6. Start your chrome with ```--disable-web-security``` and open http://localhost:3080/ (or ```npm run chrome```)
 
 When something nice is created:
 
@@ -63,7 +64,7 @@ Build your own version of the plugin
 --------
 
 1. Download and install node.js
-2. Run "npm install"
-3. Run "grunt" to test your app locally 
-4. Run "grunt build" to build the plugin version of your source.
+2. Run ```npm install```
+3. Run ```npm start``` to test your app locally 
+4. Run ```npm run build``` to build the plugin version of your source.
 5. See http://code.google.com/chrome/extensions/getstarted.html#load for how to install it in Chrome
