@@ -13,11 +13,13 @@
     "grunt-prompt": "0.1.2",
     "grunt-cli": "*"
   },
-  "scripts": {
-    "start": "grunt",
     "scripts": {
-      "start": "NODE_ENV=production; node server.js",
-      "postinstall": "./node_modules/bower/bin/bower install --allow-root"
+    "start": "grunt",
+    "build": "grunt build",
+    "postinstall": "./node_modules/bower/bin/bower install --allow-root && git submodule init && git submodule update",
+    "chrome": "google-chrome --disable-web-security",
+    "scripts": {
+      "start": "NODE_ENV=production; node server.js"
     }
   },
   "repository": {
