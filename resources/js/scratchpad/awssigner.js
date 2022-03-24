@@ -1,10 +1,12 @@
 /*global Ext:false */
 
-function AWSSigner(accessKeyId, secretKey, stsARN) {
-    if (typeof stsARN !== "string" || stsARN.length === 0) {
+function AWSSigner(accessKeyId, secretKey, stsARN, sessionToken) {
+    var notSwitchRole = typeof stsARN !== "string" || stsARN.length === 0
+    var notSessionAuth = typeof sessionToken !== "string" || sessionToken.length === 0
+    if (notSwitchRole) {
         this.accessKeyId = accessKeyId;
         this.secretKey = secretKey;
-        this.sessionToken = null;
+        this.sessionToken = notSessionAuth ? null : sessionToken;
         this.stsARN = null;
     } else {
         this.accessKeyId = null;
@@ -102,8 +104,8 @@ AWSSigner.prototype.generateSignature = function (str) {
 
 AWSV2Signer.prototype = new AWSSigner();
 
-function AWSV2Signer(accessKeyId, secretKey, stsArn) {
-    AWSSigner.call(this, accessKeyId, secretKey, stsArn);
+function AWSV2Signer(accessKeyId, secretKey, stsArn, sessionToken) {
+    AWSSigner.call(this, accessKeyId, secretKey, stsArn, sessionToken);
     this.version = 2;
 }
 

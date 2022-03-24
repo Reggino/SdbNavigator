@@ -124,7 +124,8 @@ Ext.define('SdbNavigator.SimpleDb', {
 			this.signer = new AWSV2Signer(
 				Ext.getCmp('awsAccessKey').getValue(),
 				Ext.getCmp('awsSecretKey').getValue(),
-				Ext.getCmp('awsStsArn').getValue()
+				Ext.getCmp('awsStsArn').getValue(),
+				Ext.getCmp('awsSessionToken').getValue()
 			);
 		}
 

@@ -128,6 +128,32 @@ Ext.define('SdbNavigator.view.SettingsPanel', {
 			]
 		},
 		{
+			flex: 1.5,
+			items: [
+				{
+					xtype: 'label',
+					text: 'Session Token (Optional)',
+					forId: 'awsSessionToken'
+				},
+				{
+					id: 'awsSessionToken',
+					xtype: 'textfield',
+					inputType: 'password',
+					anchor: '100%',
+					allowBlank: true,
+					stateful: true,
+					stateId: 'awsSessionToken',
+					stateEvents: ['change'],
+					applyState: function (state) {
+						this.setValue(state.value);
+					},
+					getState: function () {
+						return { value: this.getValue() };
+					}
+				}
+			]
+		},
+		{
 			flex: 0.6,
 			items: [
 				{
