@@ -1,6 +1,6 @@
 {
   "name": "SdbNavigator",
-  "version": "2.0.1",
+  "version": "2.0.9",
   "description": "SdbNavigator is a free and open source Amazon SimpleDB Administration Interface. More info on http://www.kingsquare.nl/sdbnavigator",
   "main": "app.js",
   "dependencies": {
