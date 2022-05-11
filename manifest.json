@@ -16,6 +16,7 @@
 	"permissions": [
 		"tabs",
 		"cookies",
+		"downloads",
 		"https://sdb.amazonaws.com/*",
 		"https://sdb.us-west-1.amazonaws.com/*",
 		"https://sdb.us-west-2.amazonaws.com/*",
